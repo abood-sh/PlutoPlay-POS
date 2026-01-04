@@ -141,35 +141,36 @@ class _SummarySectionState extends State<SummarySection> {
         ),
         verticalSpace(16.h),
         verticalSpace(12.h),
+
         // Print button
-        if (cartData != null && (cartData.items?.isNotEmpty ?? false))
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton.icon(
-              onPressed: _isPrinting ? null : () => _handlePrint(cartData),
-              icon: _isPrinting
-                  ? SizedBox(
-                      width: 16.w,
-                      height: 16.w,
-                      child: const CircularProgressIndicator(
-                        strokeWidth: 2,
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                      ),
-                    )
-                  : Icon(Icons.print, size: 20.w),
-              label: Text(
-                _isPrinting ? 'Printing...' : 'Test Print',
-                style: TextStyles.font14WhiteSemiBold,
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: ColorsManager.darkBlue,
-                padding: EdgeInsets.symmetric(vertical: 14.h),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.r),
-                ),
-              ),
-            ),
-          ),
+        // if (cartData != null && (cartData.items?.isNotEmpty ?? false))
+        //   SizedBox(
+        //     width: double.infinity,
+        //     child: ElevatedButton.icon(
+        //       onPressed: _isPrinting ? null : () => _handlePrint(cartData),
+        //       icon: _isPrinting
+        //           ? SizedBox(
+        //               width: 16.w,
+        //               height: 16.w,
+        //               child: const CircularProgressIndicator(
+        //                 strokeWidth: 2,
+        //                 valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+        //               ),
+        //             )
+        //           : Icon(Icons.print, size: 100.w),
+        //       label: Text(
+        //         _isPrinting ? 'Printing...' : 'Test Print',
+        //         style: TextStyles.font14WhiteSemiBold,
+        //       ),
+        //       style: ElevatedButton.styleFrom(
+        //         backgroundColor: ColorsManager.darkBlue,
+        //         padding: EdgeInsets.symmetric(vertical: 14.h),
+        //         shape: RoundedRectangleBorder(
+        //           borderRadius: BorderRadius.circular(8.r),
+        //         ),
+        //       ),
+        //     ),
+        //   ),
         if (cartData != null && (cartData.items?.isNotEmpty ?? false))
           verticalSpace(12.h),
         SizedBox(

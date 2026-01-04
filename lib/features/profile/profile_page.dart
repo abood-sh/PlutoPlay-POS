@@ -46,13 +46,18 @@ class _ProfilePageState extends State<ProfilePage> {
                 borderRadius: BorderRadius.circular(12.r),
               ),
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CircleAvatar(
-                    radius: 32.sp,
+                    // radius: 32.sp,
                     backgroundColor: ColorsManager.mainBlue,
-                    child: Icon(Icons.person, size: 32.sp, color: Colors.white),
+                    child: Icon(
+                      Icons.person,
+                      size: 120.sp,
+                      color: Colors.white,
+                    ),
                   ),
-                  horizontalSpace(16.w),
+                  horizontalSpace(50.w),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -110,7 +115,7 @@ class _ProfilePageState extends State<ProfilePage> {
               width: double.infinity,
               child: OutlinedButton.icon(
                 onPressed: () => _showLogoutDialog(context),
-                icon: const Icon(Icons.logout),
+                icon: Icon(Icons.logout, size: 100.sp),
                 label: Text('Logout', style: TextStyles.font14DarkBlueMedium),
                 style: OutlinedButton.styleFrom(
                   padding: EdgeInsets.symmetric(vertical: 14.h),
@@ -146,6 +151,8 @@ class _ProfilePageState extends State<ProfilePage> {
           borderRadius: BorderRadius.circular(8.r),
         ),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
               padding: EdgeInsets.all(8.w),
@@ -153,7 +160,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 color: ColorsManager.white,
                 borderRadius: BorderRadius.circular(8.r),
               ),
-              child: Icon(icon, size: 24.sp, color: ColorsManager.mainBlue),
+              child: Icon(icon, size: 120.sp, color: ColorsManager.mainBlue),
             ),
             horizontalSpace(16.w),
             Expanded(
@@ -168,7 +175,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             Icon(
               Icons.arrow_forward_ios,
-              size: 16.sp,
+              size: 100.sp,
               color: ColorsManager.gray,
             ),
           ],

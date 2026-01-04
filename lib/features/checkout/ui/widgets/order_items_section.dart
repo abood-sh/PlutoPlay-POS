@@ -24,7 +24,7 @@ class OrderItemsSection extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(Icons.shopping_cart, color: Colors.orange, size: 20.sp),
+              Icon(Icons.shopping_cart, color: Colors.orange, size: 100.sp),
               horizontalSpace(8.w),
               Text(
                 'Order Items',
@@ -82,6 +82,7 @@ class OrderItemsSection extends StatelessWidget {
         borderRadius: BorderRadius.circular(8.r),
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
             padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
@@ -94,7 +95,7 @@ class OrderItemsSection extends StatelessWidget {
               style: TextStyles.font12GrayRegular.copyWith(color: Colors.white),
             ),
           ),
-          horizontalSpace(12.w),
+          horizontalSpace(30.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:pos/core/networking/api_constanta.dart';
 import 'package:pos/features/checkout/data/models/apply_discount_request.dart';
 import 'package:pos/features/checkout/data/models/apply_discount_response.dart';
+import 'package:pos/features/checkout/data/models/process_payment_request.dart';
+import 'package:pos/features/checkout/data/models/process_payment_response.dart';
 import 'package:pos/features/checkout/data/models/system_settings_response.dart';
 import 'package:pos/features/home/data/models/add_rfid_request_model.dart';
 import 'package:pos/features/login/data/models/login_req_body.dart';
@@ -38,4 +40,14 @@ abstract class ApiService {
 
   @DELETE('{path}')
   Future<CartResponseModel> deleteCartItem(@Path('path') String path);
+
+  @POST(ApiConstanta.processPaymentCash)
+  Future<ProcessPaymentResponse> processPayment(
+    @Body() ProcessPaymentRequest request,
+  );
+
+  @POST(ApiConstanta.processSplitPayment)
+  Future<ProcessPaymentResponse> processSplitPayment(
+    @Body() ProcessSplitPaymentRequest request,
+  );
 }

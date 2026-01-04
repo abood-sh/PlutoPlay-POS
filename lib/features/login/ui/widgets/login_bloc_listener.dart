@@ -43,7 +43,7 @@ class LoginBlocListener extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        icon: const Icon(Icons.error, color: Colors.red, size: 32),
+        icon: const Icon(Icons.error, color: Colors.red, size: 80),
         content: Text(
           apiErrorModel.message ?? "An unexpected error occurred",
           style: TextStyles.font15DarkBlueMedium,

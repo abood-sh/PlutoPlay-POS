@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pos/core/di/dependency_injection.dart';
 import 'package:pos/core/theming/colors.dart';
-import 'package:pos/core/theming/styles.dart';
 import 'package:pos/features/home/logic/cubit/home_cubit.dart';
 import 'package:pos/features/home/logic/cubit/navigation_cubit.dart';
 import 'package:pos/features/home/ui/home_screen.dart';
@@ -22,11 +22,15 @@ class BottomNavBar extends StatelessWidget {
           onTap: (index) {
             context.read<NavigationCubit>().changeTab(index);
           },
-          type: BottomNavigationBarType.fixed,
+          //  type: BottomNavigationBarType.fixed,
           selectedItemColor: ColorsManager.mainBlue,
           unselectedItemColor: ColorsManager.gray,
-          selectedLabelStyle: TextStyles.font12DarkBlueRegular,
-          unselectedLabelStyle: TextStyles.font12GrayRegular,
+          // selectedLabelStyle: TextStyles.font12DarkBlueRegular,
+          // unselectedLabelStyle: TextStyles.font12GrayRegular,
+          iconSize: 100.sp,
+
+          // selectedFontSize: 200.sp,
+          // unselectedFontSize: 10.sp,
           items: const [
             BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
             BottomNavigationBarItem(icon: Icon(Icons.refresh), label: 'Refund'),

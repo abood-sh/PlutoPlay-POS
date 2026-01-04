@@ -3,6 +3,7 @@ import 'package:pos/core/helpers/constants.dart';
 import 'package:pos/core/helpers/shared_pref_helper.dart';
 import 'package:pos/core/networking/api_result.dart';
 import 'package:pos/features/checkout/data/models/apply_discount_request.dart';
+import 'package:pos/features/checkout/data/models/process_payment_request.dart';
 import 'package:pos/features/checkout/data/models/system_settings_response.dart';
 import 'package:pos/features/checkout/data/repos/checkout_repo.dart';
 import 'package:pos/features/checkout/logic/cubit/checkout_state.dart';
@@ -139,5 +140,72 @@ class CheckoutCubit extends Cubit<CheckoutState> {
     if (_cartData != null) {
       emit(CheckoutState.loaded(_cartData!));
     }
+  }
+
+  // Process single payment (Cash or Card)
+  Future<void> processPayment({
+    required String paymentMethod,
+    String? referenceNumber,
+    num? cashAmount,
+  }) async {
+    emit(const CheckoutState.paymentProcessing());
+
+    final request = ProcessPaymentRequest(
+      paymentMethod: paymentMethod,
+      customerId: 4,
+      referenceNumber: referenceNumber,
+      amount: paymentMethod == 'cash' ? cashAmount : null,
+    );
+
+    final result = await _checkoutRepo.processPayment(request);
+
+    result.when(
+      success: (response) {
+        if (response.data != null) {
+          _cartData = null;
+          emit(CheckoutState.paymentSuccess(response.data!));
+        }
+      },
+      failure: (error) {
+        emit(CheckoutState.paymentError(error));
+      },
+    );
+  }
+
+  // Process split payment (Cash + Card)
+  Future<void> processSplitPayment({
+    required num cashAmount,
+    required num cardAmount,
+    String? cardReferenceNumber,
+  }) async {
+    emit(const CheckoutState.paymentProcessing());
+
+    final payments = <SplitPaymentItem>[
+      SplitPaymentItem(paymentMethod: 'cash', amount: cashAmount),
+      SplitPaymentItem(
+        paymentMethod: 'card',
+        amount: cardAmount,
+        referenceNumber: cardReferenceNumber,
+      ),
+    ];
+
+    final request = ProcessSplitPaymentRequest(
+      payments: payments,
+      customerId: 4,
+    );
+
+    final result = await _checkoutRepo.processSplitPayment(request);
+
+    result.when(
+      success: (response) {
+        if (response.data != null) {
+          _cartData = null;
+          emit(CheckoutState.paymentSuccess(response.data!));
+        }
+      },
+      failure: (error) {
+        emit(CheckoutState.paymentError(error));
+      },
+    );
   }
 }

@@ -17,7 +17,7 @@ class CheckoutHeader extends StatelessWidget {
             'assets/images/logo.png',
             height: 32.h,
             errorBuilder: (context, error, stackTrace) {
-              return Icon(Icons.store, color: Colors.white, size: 32.sp);
+              return Icon(Icons.store, color: Colors.white, size: 150.sp);
             },
           ),
           SizedBox(width: 16.w),

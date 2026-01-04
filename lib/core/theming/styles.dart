@@ -29,24 +29,24 @@ class TextStyles {
   );
 
   static TextStyle font13DarkBlueRegular = TextStyle(
-    fontSize: 13.sp,
+    fontSize: 70.sp,
     fontWeight: FontWeightHelper.regular,
     color: ColorsManager.darkBlue,
   );
 
   static TextStyle font24BlueBold = TextStyle(
-    fontSize: 24.sp,
+    fontSize: 150.sp,
     fontWeight: FontWeightHelper.bold,
     color: ColorsManager.mainBlue,
   );
 
   static TextStyle font16WhiteSemiBold = TextStyle(
-    fontSize: 16.sp,
+    fontSize: 100.sp,
     fontWeight: FontWeightHelper.semiBold,
     color: Colors.white,
   );
   static TextStyle font14WhiteSemiBold = TextStyle(
-    fontSize: 14.sp,
+    fontSize: 100.sp,
     fontWeight: FontWeightHelper.semiBold,
     color: Colors.white,
   );
@@ -63,7 +63,7 @@ class TextStyles {
   );
 
   static TextStyle font12GrayRegular = TextStyle(
-    fontSize: 12.sp,
+    fontSize: 70.sp,
     fontWeight: FontWeightHelper.regular,
     color: ColorsManager.gray,
   );
@@ -93,19 +93,19 @@ class TextStyles {
   );
 
   static TextStyle font14GrayRegular = TextStyle(
-    fontSize: 14.sp,
+    fontSize: 60.sp,
     fontWeight: FontWeightHelper.regular,
     color: ColorsManager.gray,
   );
 
   static TextStyle font14LightGrayRegular = TextStyle(
-    fontSize: 14.sp,
+    fontSize: 100.sp,
     fontWeight: FontWeightHelper.regular,
     color: ColorsManager.lightGray,
   );
 
   static TextStyle font14DarkBlueMedium = TextStyle(
-    fontSize: 14.sp,
+    fontSize: 120.sp,
     fontWeight: FontWeightHelper.medium,
     color: ColorsManager.darkBlue,
   );
@@ -123,19 +123,19 @@ class TextStyles {
   );
 
   static TextStyle font14BlueSemiBold = TextStyle(
-    fontSize: 14.sp,
+    fontSize: 100.sp,
     fontWeight: FontWeightHelper.semiBold,
     color: ColorsManager.mainBlue,
   );
 
   static TextStyle font15DarkBlueMedium = TextStyle(
-    fontSize: 15.sp,
+    fontSize: 80.sp,
     fontWeight: FontWeightHelper.medium,
     color: ColorsManager.darkBlue,
   );
 
   static TextStyle font18DarkBlueBold = TextStyle(
-    fontSize: 18.sp,
+    fontSize: 120.sp,
     fontWeight: FontWeightHelper.bold,
     color: ColorsManager.darkBlue,
   );

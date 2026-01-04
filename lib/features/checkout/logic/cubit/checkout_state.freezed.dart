@@ -55,7 +55,7 @@ extension CheckoutStatePatterns on CheckoutState {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Initial value)?  initial,TResult Function( CheckoutLoaded value)?  loaded,TResult Function( CheckoutProcessing value)?  processing,TResult Function( CheckoutSuccess value)?  success,TResult Function( CheckoutError value)?  error,TResult Function( SettingsLoading value)?  settingsLoading,TResult Function( SettingsLoaded value)?  settingsLoaded,TResult Function( SettingsError value)?  settingsError,TResult Function( DiscountApplying value)?  discountApplying,TResult Function( DiscountApplied value)?  discountApplied,TResult Function( DiscountError value)?  discountError,TResult Function( PasswordRequired value)?  passwordRequired,TResult Function( PasswordValid value)?  passwordValid,TResult Function( PasswordInvalid value)?  passwordInvalid,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Initial value)?  initial,TResult Function( CheckoutLoaded value)?  loaded,TResult Function( CheckoutProcessing value)?  processing,TResult Function( CheckoutSuccess value)?  success,TResult Function( CheckoutError value)?  error,TResult Function( SettingsLoading value)?  settingsLoading,TResult Function( SettingsLoaded value)?  settingsLoaded,TResult Function( SettingsError value)?  settingsError,TResult Function( DiscountApplying value)?  discountApplying,TResult Function( DiscountApplied value)?  discountApplied,TResult Function( DiscountError value)?  discountError,TResult Function( PasswordRequired value)?  passwordRequired,TResult Function( PasswordValid value)?  passwordValid,TResult Function( PasswordInvalid value)?  passwordInvalid,TResult Function( PaymentProcessing value)?  paymentProcessing,TResult Function( PaymentSuccess value)?  paymentSuccess,TResult Function( PaymentError value)?  paymentError,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
@@ -72,7 +72,10 @@ return discountApplied(_that);case DiscountError() when discountError != null:
 return discountError(_that);case PasswordRequired() when passwordRequired != null:
 return passwordRequired(_that);case PasswordValid() when passwordValid != null:
 return passwordValid(_that);case PasswordInvalid() when passwordInvalid != null:
-return passwordInvalid(_that);case _:
+return passwordInvalid(_that);case PaymentProcessing() when paymentProcessing != null:
+return paymentProcessing(_that);case PaymentSuccess() when paymentSuccess != null:
+return paymentSuccess(_that);case PaymentError() when paymentError != null:
+return paymentError(_that);case _:
   return orElse();
 
 }
@@ -90,7 +93,7 @@ return passwordInvalid(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Initial value)  initial,required TResult Function( CheckoutLoaded value)  loaded,required TResult Function( CheckoutProcessing value)  processing,required TResult Function( CheckoutSuccess value)  success,required TResult Function( CheckoutError value)  error,required TResult Function( SettingsLoading value)  settingsLoading,required TResult Function( SettingsLoaded value)  settingsLoaded,required TResult Function( SettingsError value)  settingsError,required TResult Function( DiscountApplying value)  discountApplying,required TResult Function( DiscountApplied value)  discountApplied,required TResult Function( DiscountError value)  discountError,required TResult Function( PasswordRequired value)  passwordRequired,required TResult Function( PasswordValid value)  passwordValid,required TResult Function( PasswordInvalid value)  passwordInvalid,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Initial value)  initial,required TResult Function( CheckoutLoaded value)  loaded,required TResult Function( CheckoutProcessing value)  processing,required TResult Function( CheckoutSuccess value)  success,required TResult Function( CheckoutError value)  error,required TResult Function( SettingsLoading value)  settingsLoading,required TResult Function( SettingsLoaded value)  settingsLoaded,required TResult Function( SettingsError value)  settingsError,required TResult Function( DiscountApplying value)  discountApplying,required TResult Function( DiscountApplied value)  discountApplied,required TResult Function( DiscountError value)  discountError,required TResult Function( PasswordRequired value)  passwordRequired,required TResult Function( PasswordValid value)  passwordValid,required TResult Function( PasswordInvalid value)  passwordInvalid,required TResult Function( PaymentProcessing value)  paymentProcessing,required TResult Function( PaymentSuccess value)  paymentSuccess,required TResult Function( PaymentError value)  paymentError,}){
 final _that = this;
 switch (_that) {
 case _Initial():
@@ -107,7 +110,10 @@ return discountApplied(_that);case DiscountError():
 return discountError(_that);case PasswordRequired():
 return passwordRequired(_that);case PasswordValid():
 return passwordValid(_that);case PasswordInvalid():
-return passwordInvalid(_that);case _:
+return passwordInvalid(_that);case PaymentProcessing():
+return paymentProcessing(_that);case PaymentSuccess():
+return paymentSuccess(_that);case PaymentError():
+return paymentError(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -124,7 +130,7 @@ return passwordInvalid(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Initial value)?  initial,TResult? Function( CheckoutLoaded value)?  loaded,TResult? Function( CheckoutProcessing value)?  processing,TResult? Function( CheckoutSuccess value)?  success,TResult? Function( CheckoutError value)?  error,TResult? Function( SettingsLoading value)?  settingsLoading,TResult? Function( SettingsLoaded value)?  settingsLoaded,TResult? Function( SettingsError value)?  settingsError,TResult? Function( DiscountApplying value)?  discountApplying,TResult? Function( DiscountApplied value)?  discountApplied,TResult? Function( DiscountError value)?  discountError,TResult? Function( PasswordRequired value)?  passwordRequired,TResult? Function( PasswordValid value)?  passwordValid,TResult? Function( PasswordInvalid value)?  passwordInvalid,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Initial value)?  initial,TResult? Function( CheckoutLoaded value)?  loaded,TResult? Function( CheckoutProcessing value)?  processing,TResult? Function( CheckoutSuccess value)?  success,TResult? Function( CheckoutError value)?  error,TResult? Function( SettingsLoading value)?  settingsLoading,TResult? Function( SettingsLoaded value)?  settingsLoaded,TResult? Function( SettingsError value)?  settingsError,TResult? Function( DiscountApplying value)?  discountApplying,TResult? Function( DiscountApplied value)?  discountApplied,TResult? Function( DiscountError value)?  discountError,TResult? Function( PasswordRequired value)?  passwordRequired,TResult? Function( PasswordValid value)?  passwordValid,TResult? Function( PasswordInvalid value)?  passwordInvalid,TResult? Function( PaymentProcessing value)?  paymentProcessing,TResult? Function( PaymentSuccess value)?  paymentSuccess,TResult? Function( PaymentError value)?  paymentError,}){
 final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
@@ -141,7 +147,10 @@ return discountApplied(_that);case DiscountError() when discountError != null:
 return discountError(_that);case PasswordRequired() when passwordRequired != null:
 return passwordRequired(_that);case PasswordValid() when passwordValid != null:
 return passwordValid(_that);case PasswordInvalid() when passwordInvalid != null:
-return passwordInvalid(_that);case _:
+return passwordInvalid(_that);case PaymentProcessing() when paymentProcessing != null:
+return paymentProcessing(_that);case PaymentSuccess() when paymentSuccess != null:
+return paymentSuccess(_that);case PaymentError() when paymentError != null:
+return paymentError(_that);case _:
   return null;
 
 }
@@ -158,7 +167,7 @@ return passwordInvalid(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function( CartData cartData)?  loaded,TResult Function()?  processing,TResult Function()?  success,TResult Function( String message)?  error,TResult Function()?  settingsLoading,TResult Function( DiscountSettingsSystem settings)?  settingsLoaded,TResult Function( ApiErrorModel error)?  settingsError,TResult Function()?  discountApplying,TResult Function( CartData cartData)?  discountApplied,TResult Function( ApiErrorModel error)?  discountError,TResult Function( DiscountSettingsSystem settings)?  passwordRequired,TResult Function()?  passwordValid,TResult Function()?  passwordInvalid,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function( CartData cartData)?  loaded,TResult Function()?  processing,TResult Function()?  success,TResult Function( String message)?  error,TResult Function()?  settingsLoading,TResult Function( DiscountSettingsSystem settings)?  settingsLoaded,TResult Function( ApiErrorModel error)?  settingsError,TResult Function()?  discountApplying,TResult Function( CartData cartData)?  discountApplied,TResult Function( ApiErrorModel error)?  discountError,TResult Function( DiscountSettingsSystem settings)?  passwordRequired,TResult Function()?  passwordValid,TResult Function()?  passwordInvalid,TResult Function()?  paymentProcessing,TResult Function( PaymentResponseData data)?  paymentSuccess,TResult Function( ApiErrorModel error)?  paymentError,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial();case CheckoutLoaded() when loaded != null:
@@ -174,7 +183,10 @@ return discountApplied(_that.cartData);case DiscountError() when discountError !
 return discountError(_that.error);case PasswordRequired() when passwordRequired != null:
 return passwordRequired(_that.settings);case PasswordValid() when passwordValid != null:
 return passwordValid();case PasswordInvalid() when passwordInvalid != null:
-return passwordInvalid();case _:
+return passwordInvalid();case PaymentProcessing() when paymentProcessing != null:
+return paymentProcessing();case PaymentSuccess() when paymentSuccess != null:
+return paymentSuccess(_that.data);case PaymentError() when paymentError != null:
+return paymentError(_that.error);case _:
   return orElse();
 
 }
@@ -192,7 +204,7 @@ return passwordInvalid();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function( CartData cartData)  loaded,required TResult Function()  processing,required TResult Function()  success,required TResult Function( String message)  error,required TResult Function()  settingsLoading,required TResult Function( DiscountSettingsSystem settings)  settingsLoaded,required TResult Function( ApiErrorModel error)  settingsError,required TResult Function()  discountApplying,required TResult Function( CartData cartData)  discountApplied,required TResult Function( ApiErrorModel error)  discountError,required TResult Function( DiscountSettingsSystem settings)  passwordRequired,required TResult Function()  passwordValid,required TResult Function()  passwordInvalid,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function( CartData cartData)  loaded,required TResult Function()  processing,required TResult Function()  success,required TResult Function( String message)  error,required TResult Function()  settingsLoading,required TResult Function( DiscountSettingsSystem settings)  settingsLoaded,required TResult Function( ApiErrorModel error)  settingsError,required TResult Function()  discountApplying,required TResult Function( CartData cartData)  discountApplied,required TResult Function( ApiErrorModel error)  discountError,required TResult Function( DiscountSettingsSystem settings)  passwordRequired,required TResult Function()  passwordValid,required TResult Function()  passwordInvalid,required TResult Function()  paymentProcessing,required TResult Function( PaymentResponseData data)  paymentSuccess,required TResult Function( ApiErrorModel error)  paymentError,}) {final _that = this;
 switch (_that) {
 case _Initial():
 return initial();case CheckoutLoaded():
@@ -208,7 +220,10 @@ return discountApplied(_that.cartData);case DiscountError():
 return discountError(_that.error);case PasswordRequired():
 return passwordRequired(_that.settings);case PasswordValid():
 return passwordValid();case PasswordInvalid():
-return passwordInvalid();case _:
+return passwordInvalid();case PaymentProcessing():
+return paymentProcessing();case PaymentSuccess():
+return paymentSuccess(_that.data);case PaymentError():
+return paymentError(_that.error);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -225,7 +240,7 @@ return passwordInvalid();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function( CartData cartData)?  loaded,TResult? Function()?  processing,TResult? Function()?  success,TResult? Function( String message)?  error,TResult? Function()?  settingsLoading,TResult? Function( DiscountSettingsSystem settings)?  settingsLoaded,TResult? Function( ApiErrorModel error)?  settingsError,TResult? Function()?  discountApplying,TResult? Function( CartData cartData)?  discountApplied,TResult? Function( ApiErrorModel error)?  discountError,TResult? Function( DiscountSettingsSystem settings)?  passwordRequired,TResult? Function()?  passwordValid,TResult? Function()?  passwordInvalid,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function( CartData cartData)?  loaded,TResult? Function()?  processing,TResult? Function()?  success,TResult? Function( String message)?  error,TResult? Function()?  settingsLoading,TResult? Function( DiscountSettingsSystem settings)?  settingsLoaded,TResult? Function( ApiErrorModel error)?  settingsError,TResult? Function()?  discountApplying,TResult? Function( CartData cartData)?  discountApplied,TResult? Function( ApiErrorModel error)?  discountError,TResult? Function( DiscountSettingsSystem settings)?  passwordRequired,TResult? Function()?  passwordValid,TResult? Function()?  passwordInvalid,TResult? Function()?  paymentProcessing,TResult? Function( PaymentResponseData data)?  paymentSuccess,TResult? Function( ApiErrorModel error)?  paymentError,}) {final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial();case CheckoutLoaded() when loaded != null:
@@ -241,7 +256,10 @@ return discountApplied(_that.cartData);case DiscountError() when discountError !
 return discountError(_that.error);case PasswordRequired() when passwordRequired != null:
 return passwordRequired(_that.settings);case PasswordValid() when passwordValid != null:
 return passwordValid();case PasswordInvalid() when passwordInvalid != null:
-return passwordInvalid();case _:
+return passwordInvalid();case PaymentProcessing() when paymentProcessing != null:
+return paymentProcessing();case PaymentSuccess() when paymentSuccess != null:
+return paymentSuccess(_that.data);case PaymentError() when paymentError != null:
+return paymentError(_that.error);case _:
   return null;
 
 }
@@ -934,5 +952,169 @@ String toString() {
 
 
 
+
+/// @nodoc
+
+
+class PaymentProcessing implements CheckoutState {
+  const PaymentProcessing();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PaymentProcessing);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'CheckoutState.paymentProcessing()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class PaymentSuccess implements CheckoutState {
+  const PaymentSuccess(this.data);
+  
+
+ final  PaymentResponseData data;
+
+/// Create a copy of CheckoutState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$PaymentSuccessCopyWith<PaymentSuccess> get copyWith => _$PaymentSuccessCopyWithImpl<PaymentSuccess>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PaymentSuccess&&(identical(other.data, data) || other.data == data));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,data);
+
+@override
+String toString() {
+  return 'CheckoutState.paymentSuccess(data: $data)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $PaymentSuccessCopyWith<$Res> implements $CheckoutStateCopyWith<$Res> {
+  factory $PaymentSuccessCopyWith(PaymentSuccess value, $Res Function(PaymentSuccess) _then) = _$PaymentSuccessCopyWithImpl;
+@useResult
+$Res call({
+ PaymentResponseData data
+});
+
+
+
+
+}
+/// @nodoc
+class _$PaymentSuccessCopyWithImpl<$Res>
+    implements $PaymentSuccessCopyWith<$Res> {
+  _$PaymentSuccessCopyWithImpl(this._self, this._then);
+
+  final PaymentSuccess _self;
+  final $Res Function(PaymentSuccess) _then;
+
+/// Create a copy of CheckoutState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? data = null,}) {
+  return _then(PaymentSuccess(
+null == data ? _self.data : data // ignore: cast_nullable_to_non_nullable
+as PaymentResponseData,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class PaymentError implements CheckoutState {
+  const PaymentError(this.error);
+  
+
+ final  ApiErrorModel error;
+
+/// Create a copy of CheckoutState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$PaymentErrorCopyWith<PaymentError> get copyWith => _$PaymentErrorCopyWithImpl<PaymentError>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PaymentError&&(identical(other.error, error) || other.error == error));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,error);
+
+@override
+String toString() {
+  return 'CheckoutState.paymentError(error: $error)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $PaymentErrorCopyWith<$Res> implements $CheckoutStateCopyWith<$Res> {
+  factory $PaymentErrorCopyWith(PaymentError value, $Res Function(PaymentError) _then) = _$PaymentErrorCopyWithImpl;
+@useResult
+$Res call({
+ ApiErrorModel error
+});
+
+
+
+
+}
+/// @nodoc
+class _$PaymentErrorCopyWithImpl<$Res>
+    implements $PaymentErrorCopyWith<$Res> {
+  _$PaymentErrorCopyWithImpl(this._self, this._then);
+
+  final PaymentError _self;
+  final $Res Function(PaymentError) _then;
+
+/// Create a copy of CheckoutState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? error = null,}) {
+  return _then(PaymentError(
+null == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
+as ApiErrorModel,
+  ));
+}
+
+
+}
 
 // dart format on

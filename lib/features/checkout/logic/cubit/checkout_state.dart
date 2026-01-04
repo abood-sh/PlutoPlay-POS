@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pos/core/networking/api_error_model.dart';
+import 'package:pos/features/checkout/data/models/process_payment_response.dart';
 import 'package:pos/features/checkout/data/models/system_settings_response.dart';
 import 'package:pos/features/home/data/models/cart_model_response.dart';
 
@@ -33,4 +34,10 @@ class CheckoutState with _$CheckoutState {
   ) = PasswordRequired;
   const factory CheckoutState.passwordValid() = PasswordValid;
   const factory CheckoutState.passwordInvalid() = PasswordInvalid;
+
+  // Payment states
+  const factory CheckoutState.paymentProcessing() = PaymentProcessing;
+  const factory CheckoutState.paymentSuccess(PaymentResponseData data) =
+      PaymentSuccess;
+  const factory CheckoutState.paymentError(ApiErrorModel error) = PaymentError;
 }

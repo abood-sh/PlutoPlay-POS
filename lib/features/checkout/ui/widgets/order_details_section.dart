@@ -55,7 +55,10 @@ class OrderDetailsSection extends StatelessWidget {
                   context.read<CheckoutCubit>().applyDiscount(discountValue);
                 },
               ),
-            );
+            ).then((_) {
+              // Reset state when dialog is closed (cancelled)
+              context.read<CheckoutCubit>().refreshLoadedState();
+            });
           },
           discountApplied: (cartData) {
             // Show success message
@@ -137,7 +140,7 @@ class OrderDetailsSection extends StatelessWidget {
   ) {
     return Row(
       children: [
-        Icon(icon, color: ColorsManager.gray, size: 20.sp),
+        Icon(icon, color: ColorsManager.gray, size: 100.sp),
         horizontalSpace(8.w),
         Text(label, style: TextStyles.font14GrayRegular),
         const Spacer(),
@@ -170,7 +173,7 @@ class OrderDetailsSection extends StatelessWidget {
   Widget _buildDiscountRow(BuildContext context) {
     return Row(
       children: [
-        Icon(Icons.discount, color: Colors.red, size: 20.sp),
+        Icon(Icons.discount, color: Colors.red, size: 100.sp),
         horizontalSpace(8.w),
         Text('Discount', style: TextStyles.font14GrayRegular),
         const Spacer(),
@@ -220,7 +223,7 @@ class OrderDetailsSection extends StatelessWidget {
   Widget _buildTotalRow() {
     return Row(
       children: [
-        Icon(Icons.check_circle, color: Colors.green, size: 24.sp),
+        Icon(Icons.check_circle, color: Colors.green, size: 100.sp),
         horizontalSpace(8.w),
         Text('Order Total', style: TextStyles.font18DarkBlueBold),
         const Spacer(),

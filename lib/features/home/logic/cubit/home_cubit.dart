@@ -1,8 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pos/core/networking/api_service.dart';
 import 'package:pos/core/networking/api_result.dart';
 import 'package:pos/features/home/data/models/add_rfid_request_model.dart';
-import 'package:pos/features/home/data/models/cart_model_response.dart';
 import 'package:pos/features/home/data/repos/home_repos.dart';
 import 'package:pos/features/home/logic/cubit/home_state.dart';
 

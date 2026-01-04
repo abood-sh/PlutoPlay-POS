@@ -3,6 +3,8 @@ import 'package:pos/core/networking/api_result.dart';
 import 'package:pos/core/networking/api_service.dart';
 import 'package:pos/features/checkout/data/models/apply_discount_request.dart';
 import 'package:pos/features/checkout/data/models/apply_discount_response.dart';
+import 'package:pos/features/checkout/data/models/process_payment_request.dart';
+import 'package:pos/features/checkout/data/models/process_payment_response.dart';
 import 'package:pos/features/checkout/data/models/system_settings_response.dart';
 
 class CheckoutRepo {
@@ -24,6 +26,28 @@ class CheckoutRepo {
   ) async {
     try {
       final response = await _apiService.applyDiscount(request);
+      return ApiResult.success(response);
+    } catch (error) {
+      return ApiResult.failure(ApiErrorHandler.handle(error));
+    }
+  }
+
+  Future<ApiResult<ProcessPaymentResponse>> processPayment(
+    ProcessPaymentRequest request,
+  ) async {
+    try {
+      final response = await _apiService.processPayment(request);
+      return ApiResult.success(response);
+    } catch (error) {
+      return ApiResult.failure(ApiErrorHandler.handle(error));
+    }
+  }
+
+  Future<ApiResult<ProcessPaymentResponse>> processSplitPayment(
+    ProcessSplitPaymentRequest request,
+  ) async {
+    try {
+      final response = await _apiService.processSplitPayment(request);
       return ApiResult.success(response);
     } catch (error) {
       return ApiResult.failure(ApiErrorHandler.handle(error));

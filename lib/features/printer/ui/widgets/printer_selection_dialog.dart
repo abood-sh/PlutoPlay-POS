@@ -29,7 +29,7 @@ class _PrinterSelectionDialogState extends State<PrinterSelectionDialog> {
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
       child: Container(
-        constraints: BoxConstraints(maxWidth: 500.w, maxHeight: 600.h),
+        constraints: BoxConstraints(minWidth: 500.w, maxHeight: 600.h),
         padding: EdgeInsets.all(24.w),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -37,7 +37,7 @@ class _PrinterSelectionDialogState extends State<PrinterSelectionDialog> {
           children: [
             Row(
               children: [
-                Icon(Icons.print, color: ColorsManager.mainBlue, size: 24.sp),
+                Icon(Icons.print, color: ColorsManager.mainBlue, size: 100.sp),
                 horizontalSpace(12.w),
                 Text('Select Printer', style: TextStyles.font18DarkBlueBold),
                 const Spacer(),

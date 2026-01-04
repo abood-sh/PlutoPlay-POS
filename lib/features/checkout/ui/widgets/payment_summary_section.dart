@@ -31,7 +31,7 @@ class PaymentSummarySection extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(Icons.credit_card, color: Colors.white, size: 20.sp),
+              Icon(Icons.credit_card, color: Colors.white, size: 100.sp),
               horizontalSpace(8.w),
               Text('Payment Summary', style: TextStyles.font16WhiteSemiBold),
             ],
@@ -93,7 +93,7 @@ class PaymentSummarySection extends StatelessWidget {
           '\$${total.toStringAsFixed(2)}',
           style: TextStyles.font18DarkBlueBold.copyWith(
             color: Colors.white,
-            fontSize: 24.sp,
+            //fontSize: 24.sp,
           ),
         ),
       ],

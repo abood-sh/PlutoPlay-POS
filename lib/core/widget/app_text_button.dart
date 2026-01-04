@@ -14,7 +14,7 @@ class AppTextButton extends StatelessWidget {
   final TextStyle textStyle;
   final VoidCallback onPressed;
   final bool isLoading;
-  AppTextButton({
+  const AppTextButton({
     super.key,
     this.borderRadius,
     this.backgroundColor,
@@ -53,11 +53,11 @@ class AppTextButton extends StatelessWidget {
       onPressed: onPressed,
       child: isLoading
           ? SizedBox(
-              height: 24.h,
-              width: 24.w,
+              height: 50.h,
+              width: 100.w,
               child: CircularProgressIndicator(
                 color: ColorsManager.mainBlue,
-                strokeWidth: 2.5,
+                //   strokeWidth: 2.5,
               ),
             )
           : Text(buttonText, style: textStyle),

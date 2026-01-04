@@ -13,15 +13,18 @@ class PosApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(375, 812),
+      designSize: const Size(
+        1366,
+        768,
+      ), // Smaller design = larger UI on 1366x768
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
         return MaterialApp(
           title: 'POS ABB',
-          useInheritedMediaQuery: true,
-          locale: DevicePreview.locale(context),
-          builder: DevicePreview.appBuilder,
+          // useInheritedMediaQuery: true,
+          // locale: DevicePreview.locale(context),
+          //builder: DevicePreview.appBuilder,
           debugShowCheckedModeBanner: false,
           // initialRoute: Routers.navigationBar,
           initialRoute: isLoggedInUser

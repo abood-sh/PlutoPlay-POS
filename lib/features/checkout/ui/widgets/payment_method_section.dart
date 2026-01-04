@@ -5,7 +5,15 @@ import 'package:pos/core/theming/colors.dart';
 import 'package:pos/core/theming/styles.dart';
 
 class PaymentMethodSection extends StatefulWidget {
-  const PaymentMethodSection({super.key});
+  final Function(
+    String method, {
+    num? cashAmount,
+    num? cardAmount,
+    String? referenceNumber,
+  })?
+  onMethodSelected;
+
+  const PaymentMethodSection({super.key, this.onMethodSelected});
 
   @override
   State<PaymentMethodSection> createState() => _PaymentMethodSectionState();
@@ -13,6 +21,46 @@ class PaymentMethodSection extends StatefulWidget {
 
 class _PaymentMethodSectionState extends State<PaymentMethodSection> {
   String? selectedMethod;
+  final TextEditingController _cashController = TextEditingController();
+  final TextEditingController _cardController = TextEditingController();
+  final TextEditingController _referenceController = TextEditingController();
+
+  @override
+  void dispose() {
+    _cashController.dispose();
+    _cardController.dispose();
+    _referenceController.dispose();
+    super.dispose();
+  }
+
+  void _notifySelection() {
+    if (widget.onMethodSelected != null && selectedMethod != null) {
+      if (selectedMethod == 'Split') {
+        widget.onMethodSelected!(
+          selectedMethod!,
+          cashAmount: num.tryParse(_cashController.text) ?? 0,
+          cardAmount: num.tryParse(_cardController.text) ?? 0,
+          referenceNumber: _referenceController.text.isNotEmpty
+              ? _referenceController.text
+              : null,
+        );
+      } else if (selectedMethod == 'Card') {
+        widget.onMethodSelected!(
+          selectedMethod!,
+          referenceNumber: _referenceController.text.isNotEmpty
+              ? _referenceController.text
+              : null,
+        );
+      } else if (selectedMethod == 'Cash') {
+        widget.onMethodSelected!(
+          selectedMethod!,
+          cashAmount: num.tryParse(_cashController.text) ?? 0,
+        );
+      } else {
+        widget.onMethodSelected!(selectedMethod!);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,27 +99,127 @@ class _PaymentMethodSectionState extends State<PaymentMethodSection> {
             childAspectRatio: 1.0,
             children: [
               _buildPaymentMethodCard('Cash', Icons.money, Colors.green),
-              // _buildPaymentMethodCard(
-              //   'COD',
-              //   Icons.local_shipping,
-              //   Colors.orange,
-              // ),
               _buildPaymentMethodCard('Card', Icons.credit_card, Colors.blue),
-              // _buildPaymentMethodCard(
-              //   'Zelle',
-              //   Icons.currency_exchange,
-              //   Colors.purple,
-              // ),
-              // _buildPaymentMethodCard('Check', Icons.receipt, Colors.teal),
-              // _buildPaymentMethodCard(
-              //   'Bank Transfer',
-              //   Icons.account_balance,
-              //   Colors.red,
-              // ),
+              _buildPaymentMethodCard('Split', Icons.call_split, Colors.orange),
             ],
           ),
+          if (selectedMethod == 'Cash') ...[
+            verticalSpace(16.h),
+            _buildCashAmountField(),
+          ],
+          if (selectedMethod == 'Card') ...[
+            verticalSpace(16.h),
+            _buildReferenceNumberField(),
+          ],
+          if (selectedMethod == 'Split') ...[
+            verticalSpace(16.h),
+            _buildSplitPaymentFields(),
+          ],
         ],
       ),
+    );
+  }
+
+  Widget _buildReferenceNumberField() {
+    return TextField(
+      controller: _referenceController,
+      style: TextStyle(fontSize: 80.sp),
+      onChanged: (_) => _notifySelection(),
+      decoration: InputDecoration(
+        labelText: 'Reference Number (Optional)',
+        labelStyle: TextStyles.font14GrayRegular,
+        hintText: 'TXN-12345',
+        hintStyle: TextStyles.font12GrayRegular,
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.r)),
+        contentPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
+      ),
+    );
+  }
+
+  Widget _buildCashAmountField() {
+    return TextField(
+      controller: _cashController,
+      keyboardType: TextInputType.number,
+      style: TextStyle(fontSize: 80.sp),
+      onChanged: (_) => _notifySelection(),
+      decoration: InputDecoration(
+        labelText: 'Cash Amount',
+        labelStyle: TextStyles.font14GrayRegular,
+        prefixText: '\$ ',
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.r)),
+        contentPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
+      ),
+    );
+  }
+
+  Widget _buildSplitPaymentFields() {
+    return Column(
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: TextField(
+                controller: _cashController,
+                keyboardType: TextInputType.number,
+                style: TextStyle(fontSize: 80.sp),
+                onChanged: (_) => _notifySelection(),
+                decoration: InputDecoration(
+                  labelText: 'Cash Amount',
+                  labelStyle: TextStyles.font14GrayRegular,
+                  prefixText: '\$ ',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.r),
+                  ),
+                  contentPadding: EdgeInsets.symmetric(
+                    horizontal: 12.w,
+                    vertical: 12.h,
+                  ),
+                ),
+              ),
+            ),
+            horizontalSpace(12.w),
+            Expanded(
+              child: TextField(
+                controller: _cardController,
+                keyboardType: TextInputType.number,
+                style: TextStyle(fontSize: 80.sp),
+                onChanged: (_) => _notifySelection(),
+                decoration: InputDecoration(
+                  labelText: 'Card Amount',
+                  labelStyle: TextStyles.font14GrayRegular,
+                  prefixText: '\$ ',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.r),
+                  ),
+                  contentPadding: EdgeInsets.symmetric(
+                    horizontal: 12.w,
+                    vertical: 12.h,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        verticalSpace(12.h),
+        TextField(
+          controller: _referenceController,
+          style: TextStyle(fontSize: 80.sp),
+          onChanged: (_) => _notifySelection(),
+          decoration: InputDecoration(
+            labelText: 'Card Reference Number (Optional)',
+            labelStyle: TextStyles.font14GrayRegular,
+            hintText: 'TXN-12345',
+            hintStyle: TextStyles.font12GrayRegular,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.r),
+            ),
+            contentPadding: EdgeInsets.symmetric(
+              horizontal: 12.w,
+              vertical: 12.h,
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -82,7 +230,15 @@ class _PaymentMethodSectionState extends State<PaymentMethodSection> {
       onTap: () {
         setState(() {
           selectedMethod = label;
+          if (label == 'Card') {
+            _cashController.clear();
+            _cardController.clear();
+          } else if (label == 'Cash') {
+            _cardController.clear();
+            _referenceController.clear();
+          }
         });
+        _notifySelection();
       },
       child: Container(
         decoration: BoxDecoration(
@@ -97,7 +253,7 @@ class _PaymentMethodSectionState extends State<PaymentMethodSection> {
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, color: color, size: 24.sp),
+            Icon(icon, color: color, size: 100.sp),
             verticalSpace(4.h),
             Text(
               label,

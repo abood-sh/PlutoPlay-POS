@@ -10,7 +10,6 @@ import '../logic/cubit/login_cubit.dart';
 import '../logic/cubit/login_state.dart';
 import 'widgets/email_and_password.dart';
 import 'widgets/login_bloc_listener.dart';
-import 'widgets/terms_and_conditions_text.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -31,7 +30,11 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Welcome to PlutoPay", style: TextStyles.font24BlueBold),
+                Text(
+                  "Welcome to PlutoPay",
+                  style: TextStyles.font24BlueBold,
+                  maxLines: 1,
+                ),
                 verticalSpace(8.h),
                 Text(
                   "Login with the data you entered during your registration",
@@ -47,6 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         if (state is Loading) {
                           return AppTextButton(
                             buttonText: "",
+                            buttonHeight: 80.h,
                             backgroundColor: ColorsManager.lighterGray,
                             textStyle: TextStyles.font16WhiteSemiBold,
                             onPressed: () {},
@@ -55,6 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         }
                         return AppTextButton(
                           buttonText: "Login",
+                          buttonHeight: 100.h,
                           textStyle: TextStyles.font16WhiteSemiBold,
                           onPressed: () {
                             validateThenLogin(context);

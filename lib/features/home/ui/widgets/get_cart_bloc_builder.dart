@@ -68,6 +68,7 @@ class GetCartBlocBuilder extends StatelessWidget {
 
     return ListView.separated(
       shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
       itemCount: items.length,
       separatorBuilder: (context, index) => verticalSpace(12.h),
       itemBuilder: (context, index) {
@@ -82,7 +83,7 @@ class GetCartBlocBuilder extends StatelessWidget {
               color: Colors.red,
               borderRadius: BorderRadius.circular(8.r),
             ),
-            child: Icon(Icons.delete, color: Colors.white, size: 28.sp),
+            child: Icon(Icons.delete, color: Colors.white, size: 100.sp),
           ),
           onDismissed: (direction) {
             if (item?.cartItemId != null) {
@@ -106,10 +107,13 @@ class GetCartBlocBuilder extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(
-                  Icons.shopping_cart,
-                  color: ColorsManager.gray,
-                  size: 24.sp,
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Icon(
+                    Icons.shopping_cart,
+                    color: ColorsManager.gray,
+                    size: 100.sp,
+                  ),
                 ),
                 horizontalSpace(12.w),
                 Expanded(

@@ -65,7 +65,7 @@ class _EmailAndPasswordState extends State<EmailAndPassword> {
               return null;
             },
           ),
-          verticalSpace(18.h),
+          verticalSpace(30.h),
           AppTextFormField(
             controller: context.read<LoginCubit>().passwordController,
             hintText: "password",
@@ -84,6 +84,7 @@ class _EmailAndPasswordState extends State<EmailAndPassword> {
               },
               child: Icon(
                 isObscureText ? Icons.visibility_off : Icons.visibility,
+                size: 70.sp,
               ),
             ),
           ),

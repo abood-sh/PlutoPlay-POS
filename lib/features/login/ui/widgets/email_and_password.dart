@@ -65,7 +65,7 @@ class _EmailAndPasswordState extends State<EmailAndPassword> {
               return null;
             },
           ),
-          verticalSpace(30.h),
+          verticalSpace(15.h),
           AppTextFormField(
             controller: context.read<LoginCubit>().passwordController,
             hintText: "password",

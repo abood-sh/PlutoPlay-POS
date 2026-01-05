@@ -31,7 +31,7 @@ class PaymentSummarySection extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(Icons.credit_card, color: Colors.white, size: 100.sp),
+              Icon(Icons.credit_card, color: Colors.white, size: 50.sp),
               horizontalSpace(8.w),
               Text('Payment Summary', style: TextStyles.font16WhiteSemiBold),
             ],

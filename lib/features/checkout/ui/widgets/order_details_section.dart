@@ -140,7 +140,7 @@ class OrderDetailsSection extends StatelessWidget {
   ) {
     return Row(
       children: [
-        Icon(icon, color: ColorsManager.gray, size: 100.sp),
+        Icon(icon, color: ColorsManager.gray, size: 50.sp),
         horizontalSpace(8.w),
         Text(label, style: TextStyles.font14GrayRegular),
         const Spacer(),
@@ -173,7 +173,7 @@ class OrderDetailsSection extends StatelessWidget {
   Widget _buildDiscountRow(BuildContext context) {
     return Row(
       children: [
-        Icon(Icons.discount, color: Colors.red, size: 100.sp),
+        Icon(Icons.discount, color: Colors.red, size: 50.sp),
         horizontalSpace(8.w),
         Text('Discount', style: TextStyles.font14GrayRegular),
         const Spacer(),
@@ -194,7 +194,7 @@ class OrderDetailsSection extends StatelessWidget {
                         color: Colors.white,
                       ),
                     )
-                  : Icon(Icons.add, size: 16.sp),
+                  : Icon(Icons.add, size: 50.sp),
               label: Text(
                 isLoading ? 'Loading...' : 'Add',
                 style: TextStyles.font12GrayRegular.copyWith(
@@ -223,7 +223,7 @@ class OrderDetailsSection extends StatelessWidget {
   Widget _buildTotalRow() {
     return Row(
       children: [
-        Icon(Icons.check_circle, color: Colors.green, size: 100.sp),
+        Icon(Icons.check_circle, color: Colors.green, size: 50.sp),
         horizontalSpace(8.w),
         Text('Order Total', style: TextStyles.font18DarkBlueBold),
         const Spacer(),

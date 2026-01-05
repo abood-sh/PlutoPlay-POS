@@ -22,9 +22,9 @@ class PosApp extends StatelessWidget {
       builder: (context, child) {
         return MaterialApp(
           title: 'POS ABB',
-          // useInheritedMediaQuery: true,
-          // locale: DevicePreview.locale(context),
-          //builder: DevicePreview.appBuilder,
+          useInheritedMediaQuery: true,
+          locale: DevicePreview.locale(context),
+          builder: DevicePreview.appBuilder,
           debugShowCheckedModeBanner: false,
           // initialRoute: Routers.navigationBar,
           initialRoute: isLoggedInUser

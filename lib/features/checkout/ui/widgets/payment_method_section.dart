@@ -76,7 +76,7 @@ class _PaymentMethodSectionState extends State<PaymentMethodSection> {
         children: [
           Row(
             children: [
-              Icon(Icons.payment, color: ColorsManager.darkBlue, size: 20.sp),
+              Icon(Icons.payment, color: ColorsManager.darkBlue, size: 50.sp),
               horizontalSpace(3.w),
               Expanded(
                 child: Text(

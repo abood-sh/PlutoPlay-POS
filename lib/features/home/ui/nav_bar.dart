@@ -14,6 +14,7 @@ class NavigationBarApp extends StatelessWidget {
         return Scaffold(
           backgroundColor: Colors.white,
           appBar: AppBar(
+            centerTitle: true,
             backgroundColor: Colors.white,
             elevation: 0,
             title: Text(

@@ -39,7 +39,7 @@ class _ScanSectionState extends State<ScanSection> {
         verticalSpace(12.h),
         TextField(
           controller: _barcodeController,
-          style: TextStyle(fontSize: 100.sp),
+          style: TextStyle(fontSize: 50.sp),
           onSubmitted: (value) {
             _addRfidToCart();
           },

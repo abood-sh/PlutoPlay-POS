@@ -26,7 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 40.h),
+            padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 16.h),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -40,17 +40,17 @@ class _LoginScreenState extends State<LoginScreen> {
                   "Login with the data you entered during your registration",
                   style: TextStyles.font14GrayRegular,
                 ),
-                verticalSpace(36.h),
+                verticalSpace(10.h),
                 Column(
                   children: [
                     const EmailAndPassword(),
-                    verticalSpace(40.h),
+                    verticalSpace(25.h),
                     BlocBuilder<LoginCubit, LoginState>(
                       builder: (context, state) {
                         if (state is Loading) {
                           return AppTextButton(
                             buttonText: "",
-                            buttonHeight: 80.h,
+                            buttonHeight: 50.h,
                             backgroundColor: ColorsManager.lighterGray,
                             textStyle: TextStyles.font16WhiteSemiBold,
                             onPressed: () {},
@@ -59,7 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         }
                         return AppTextButton(
                           buttonText: "Login",
-                          buttonHeight: 100.h,
+                          buttonHeight: 50.h,
                           textStyle: TextStyles.font16WhiteSemiBold,
                           onPressed: () {
                             validateThenLogin(context);

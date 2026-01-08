@@ -70,7 +70,7 @@ class AppTextFormField extends StatelessWidget {
         hintStyle: hintStyle ?? TextStyles.font14LightGrayRegular,
         errorStyle: TextStyle(
           color: Colors.red,
-          fontSize: 50.sp,
+          fontSize: 25.sp,
           fontWeight: FontWeight.w500,
         ),
         hintText: hintText,

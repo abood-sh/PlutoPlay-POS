@@ -11,21 +11,55 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: EdgeInsets.all(16.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const ScanSection(),
-            verticalSpace(24.h),
-            const GetCartBlocBuilder(),
-            verticalSpace(24.h),
-            const SummarySection(),
-            const AddRfidBlocListener(),
-          ],
-        ),
-      ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isTablet = constraints.maxWidth > 600;
+
+        if (isTablet) {
+          return Padding(
+            padding: EdgeInsets.all(16.w),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const ScanSection(),
+                      verticalSpace(16.h),
+                      const Expanded(child: GetCartBlocBuilder()),
+                    ],
+                  ),
+                ),
+                horizontalSpace(16.w),
+                Expanded(
+                  flex: 1,
+                  child: Column(
+                    children: [const Spacer(), const SummarySection()],
+                  ),
+                ),
+                const AddRfidBlocListener(),
+              ],
+            ),
+          );
+        }
+
+        return Padding(
+          padding: EdgeInsets.all(16.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const ScanSection(),
+              verticalSpace(16.h),
+              const Expanded(child: GetCartBlocBuilder()),
+              verticalSpace(16.h),
+              const SummarySection(),
+              const AddRfidBlocListener(),
+            ],
+          ),
+        );
+      },
     );
   }
 }

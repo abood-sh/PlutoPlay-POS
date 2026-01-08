@@ -5,6 +5,7 @@ class ApiConstanta {
   static const String addRFid = '/cart/add-rfid';
   static const String systemsSettings = '/system/settings';
   static const String applyDiscount = '/cart/discount';
+  static const String addCustom = '/cart/add-custom';
   static String clearOneCartItem(String cartItemId) => '/cart/item/$cartItemId';
   static const String processPaymentCash = '/checkout/process';
   static const String processSplitPayment = '/checkout/process-split';

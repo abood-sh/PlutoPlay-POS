@@ -73,10 +73,12 @@ class CartItemModel {
   @JsonKey(name: 'product_name')
   final String? productName;
 
+  @JsonKey(fromJson: _numToString)
   final String? price;
 
   final int? quantity;
 
+  @JsonKey(fromJson: _numToString)
   final String? subtotal;
 
   @JsonKey(name: 'rfid_tag_id')
@@ -100,4 +102,9 @@ class CartItemModel {
       _$CartItemModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$CartItemModelToJson(this);
+
+  static String? _numToString(dynamic value) {
+    if (value == null) return null;
+    return value.toString();
+  }
 }

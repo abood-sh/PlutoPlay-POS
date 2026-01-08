@@ -13,7 +13,7 @@ class RefundPage extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.refresh, size: 64.sp, color: ColorsManager.lightGray),
+          Icon(Icons.refresh, size: 48.sp, color: ColorsManager.lightGray),
           verticalSpace(16.h),
           Text('Refund Page', style: TextStyles.font18DarkBlueBold),
           verticalSpace(8.h),

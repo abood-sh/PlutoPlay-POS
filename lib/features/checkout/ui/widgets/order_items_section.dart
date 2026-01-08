@@ -13,58 +13,78 @@ class OrderItemsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(8.r),
+        borderRadius: BorderRadius.circular(12.r),
         border: Border.all(color: ColorsManager.lighterGray),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Icon(Icons.shopping_cart, color: Colors.orange, size: 100.sp),
-              horizontalSpace(8.w),
-              Text(
-                'Order Items',
-                style: TextStyles.font16WhiteSemiBold.copyWith(
-                  color: Colors.orange,
-                ),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+            decoration: BoxDecoration(
+              color: ColorsManager.darkBlue,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(12.r),
+                topRight: Radius.circular(12.r),
               ),
-              horizontalSpace(8.w),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
-                decoration: BoxDecoration(
-                  color: Colors.orange,
-                  borderRadius: BorderRadius.circular(12.r),
-                ),
-                child: Text(
-                  '${items.length} ${items.length == 1 ? 'item' : 'items'}',
-                  style: TextStyles.font12GrayRegular.copyWith(
-                    color: Colors.white,
+            ),
+            child: Row(
+              children: [
+                Icon(Icons.receipt_long, color: Colors.white, size: 20.sp),
+                horizontalSpace(8.w),
+                Text('Order Items', style: TextStyles.font16WhiteSemiBold),
+                const Spacer(),
+                Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 10.w,
+                    vertical: 4.h,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(12.r),
+                  ),
+                  child: Text(
+                    '${items.length} ${items.length == 1 ? 'item' : 'items'}',
+                    style: TextStyles.font12GrayRegular.copyWith(
+                      color: Colors.white,
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-          verticalSpace(16.h),
           if (items.isEmpty)
-            Center(
-              child: Text(
-                'No items in cart',
-                style: TextStyles.font14DarkBlueMedium,
+            Expanded(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.shopping_cart_outlined,
+                      size: 48.sp,
+                      color: ColorsManager.lightGray,
+                    ),
+                    verticalSpace(8.h),
+                    Text(
+                      'No items in cart',
+                      style: TextStyles.font14GrayRegular,
+                    ),
+                  ],
+                ),
               ),
             )
           else
-            ListView.separated(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: items.length,
-              separatorBuilder: (context, index) => verticalSpace(8.h),
-              itemBuilder: (context, index) {
-                return _buildOrderItem(items[index]);
-              },
+            Expanded(
+              child: ListView.builder(
+                padding: EdgeInsets.all(8.w),
+                physics: const AlwaysScrollableScrollPhysics(),
+                itemCount: items.length,
+                itemBuilder: (context, index) {
+                  return _buildOrderItem(items[index]);
+                },
+              ),
             ),
         ],
       ),
@@ -76,26 +96,32 @@ class OrderItemsSection extends StatelessWidget {
     final subtotal = double.tryParse(item.subtotal ?? '0') ?? 0;
 
     return Container(
+      margin: EdgeInsets.symmetric(vertical: 4.h),
       padding: EdgeInsets.all(12.w),
       decoration: BoxDecoration(
         color: ColorsManager.lighterGray.withOpacity(0.3),
         borderRadius: BorderRadius.circular(8.r),
       ),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+            width: 40.w,
+            height: 40.w,
             decoration: BoxDecoration(
-              color: ColorsManager.darkBlue,
-              borderRadius: BorderRadius.circular(4.r),
+              color: ColorsManager.mainBlue.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8.r),
             ),
-            child: Text(
-              item.type ?? 'Product',
-              style: TextStyles.font12GrayRegular.copyWith(color: Colors.white),
+            child: Center(
+              child: Text(
+                '${item.quantity ?? 1}x',
+                style: TextStyles.font14DarkBlueMedium.copyWith(
+                  color: ColorsManager.mainBlue,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ),
-          horizontalSpace(30.w),
+          horizontalSpace(12.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -103,31 +129,22 @@ class OrderItemsSection extends StatelessWidget {
                 Text(
                   item.productName ?? 'Unknown Product',
                   style: TextStyles.font14DarkBlueMedium,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
-                verticalSpace(4.h),
-                if (item.rfidTagId != null)
-                  Text(
-                    'RFID: ${item.rfidTagId}',
-                    style: TextStyles.font12GrayRegular,
-                  ),
+                verticalSpace(2.h),
+                Text(
+                  '\$${price.toStringAsFixed(2)}',
+                  style: TextStyles.font12GrayRegular,
+                ),
               ],
             ),
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                '\$${subtotal.toStringAsFixed(2)}',
-                style: TextStyles.font18DarkBlueBold.copyWith(
-                  color: Colors.orange,
-                ),
-              ),
-              verticalSpace(4.h),
-              Text(
-                'Qty: ${item.quantity ?? 0} x \$${price.toStringAsFixed(2)}',
-                style: TextStyles.font12GrayRegular,
-              ),
-            ],
+          Text(
+            '\$${subtotal.toStringAsFixed(2)}',
+            style: TextStyles.font16WhiteSemiBold.copyWith(
+              color: ColorsManager.darkBlue,
+            ),
           ),
         ],
       ),

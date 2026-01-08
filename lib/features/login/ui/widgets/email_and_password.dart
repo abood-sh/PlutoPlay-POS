@@ -84,7 +84,7 @@ class _EmailAndPasswordState extends State<EmailAndPassword> {
               },
               child: Icon(
                 isObscureText ? Icons.visibility_off : Icons.visibility,
-                size: 70.sp,
+                size: 40.sp,
               ),
             ),
           ),

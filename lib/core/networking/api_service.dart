@@ -6,6 +6,7 @@ import 'package:pos/features/checkout/data/models/process_payment_request.dart';
 import 'package:pos/features/checkout/data/models/process_payment_response.dart';
 import 'package:pos/features/checkout/data/models/system_settings_response.dart';
 import 'package:pos/features/home/data/models/add_rfid_request_model.dart';
+import 'package:pos/features/home/data/models/add_custom_item_request.dart';
 import 'package:pos/features/login/data/models/login_req_body.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -28,6 +29,11 @@ abstract class ApiService {
   @POST(ApiConstanta.addRFid)
   Future<AddRfidResponse> addRfidToCart(
     @Body() AddRfidRequestModel addRFidRequestModel,
+  );
+
+  @POST(ApiConstanta.addCustom)
+  Future<CartResponseModel> addCustomItem(
+    @Body() AddCustomItemRequest addCustomItemRequest,
   );
 
   @GET(ApiConstanta.systemsSettings)

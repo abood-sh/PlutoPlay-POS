@@ -1,13 +1,21 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pos/core/networking/api_result.dart';
 import 'package:pos/features/home/data/models/add_rfid_request_model.dart';
+import 'package:pos/features/home/data/models/add_custom_item_request.dart';
 import 'package:pos/features/home/data/repos/home_repos.dart';
 import 'package:pos/features/home/logic/cubit/home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
   final HomeRepo _homeRepo;
 
+  // Track scanner mode (true = RFID scanner, false = manual keyboard entry)
+  bool isScannerMode = true;
+
   HomeCubit(this._homeRepo) : super(const HomeState.initial());
+
+  void setScannerMode(bool value) {
+    isScannerMode = value;
+  }
 
   void getCart() async {
     emit(const HomeState.getCartLoading());
@@ -30,7 +38,7 @@ class HomeCubit extends Cubit<HomeState> {
 
     response.when(
       success: (addRfidToCartResponse) async {
-        emit(HomeState.getCartSuccess([addRfidToCartResponse.data]));
+        emit(HomeState.addRfidToCartSuccess([addRfidToCartResponse.data]));
       },
       failure: (apiErrorModel) {
         emit(HomeState.addRfidToCartError(apiErrorModel));
@@ -48,6 +56,40 @@ class HomeCubit extends Cubit<HomeState> {
       },
       failure: (apiErrorModel) {
         emit(HomeState.deleteCartItemError(apiErrorModel));
+      },
+    );
+  }
+
+  Future<void> addCustomItem({
+    required String name,
+    required num price,
+    required int quantity,
+    String? barcode,
+    String? description,
+  }) async {
+    emit(const HomeState.addCustomItemLoading());
+
+    // Generate random barcode if not provided
+    final finalBarcode = barcode?.isNotEmpty == true
+        ? barcode
+        : 'CUSTOM-${DateTime.now().millisecondsSinceEpoch}';
+
+    final request = AddCustomItemRequest(
+      name: name,
+      price: price,
+      quantity: quantity,
+      barcode: finalBarcode,
+      description: description,
+    );
+
+    final response = await _homeRepo.addCustomItem(request);
+
+    response.when(
+      success: (cartResponse) async {
+        emit(HomeState.addCustomItemSuccess([cartResponse.data]));
+      },
+      failure: (apiErrorModel) {
+        emit(HomeState.addCustomItemError(apiErrorModel));
       },
     );
   }

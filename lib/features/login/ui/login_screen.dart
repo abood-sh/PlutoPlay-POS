@@ -24,58 +24,65 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       backgroundColor: ColorsManager.white,
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 16.h),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Welcome to PlutoPay",
-                  style: TextStyles.font24BlueBold,
-                  maxLines: 1,
-                ),
-                verticalSpace(8.h),
-                Text(
-                  "Login with the data you entered during your registration",
-                  style: TextStyles.font14GrayRegular,
-                ),
-                verticalSpace(10.h),
-                Column(
-                  children: [
-                    const EmailAndPassword(),
-                    verticalSpace(25.h),
-                    BlocBuilder<LoginCubit, LoginState>(
-                      builder: (context, state) {
-                        if (state is Loading) {
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final isTablet = constraints.maxWidth > 600;
+            final maxWidth = isTablet ? 500.0 : double.infinity;
+
+            return Center(
+              child: SingleChildScrollView(
+                child: Container(
+                  constraints: BoxConstraints(maxWidth: maxWidth),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 30.w,
+                    vertical: 24.h,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        "Welcome to PlutoPay",
+                        style: TextStyles.font24BlueBold,
+                      ),
+                      verticalSpace(8.h),
+                      Text(
+                        "Login with the data you entered during your registration",
+                        style: TextStyles.font14GrayRegular,
+                      ),
+                      verticalSpace(24.h),
+                      const EmailAndPassword(),
+                      verticalSpace(25.h),
+                      BlocBuilder<LoginCubit, LoginState>(
+                        builder: (context, state) {
+                          if (state is Loading) {
+                            return AppTextButton(
+                              buttonText: "",
+                              buttonHeight: 50.h,
+                              backgroundColor: ColorsManager.lighterGray,
+                              textStyle: TextStyles.font16WhiteSemiBold,
+                              onPressed: () {},
+                              isLoading: true,
+                            );
+                          }
                           return AppTextButton(
-                            buttonText: "",
-                            buttonHeight: 50.h,
-                            backgroundColor: ColorsManager.lighterGray,
+                            buttonText: "Login",
+                            buttonHeight: 60.h,
                             textStyle: TextStyles.font16WhiteSemiBold,
-                            onPressed: () {},
-                            isLoading: true,
+                            onPressed: () {
+                              validateThenLogin(context);
+                            },
                           );
-                        }
-                        return AppTextButton(
-                          buttonText: "Login",
-                          buttonHeight: 50.h,
-                          textStyle: TextStyles.font16WhiteSemiBold,
-                          onPressed: () {
-                            validateThenLogin(context);
-                          },
-                        );
-                      },
-                    ),
-                    verticalSpace(16),
-                    // const TermsAndConditionsText(),
-                    verticalSpace(60),
-                    const LoginBlocListener(),
-                  ],
+                        },
+                      ),
+                      const LoginBlocListener(),
+                    ],
+                  ),
                 ),
-              ],
-            ),
-          ),
+              ),
+            );
+          },
         ),
       ),
     );

@@ -93,40 +93,46 @@ class OrderDetailsSection extends StatelessWidget {
         );
       },
       child: Container(
-        padding: EdgeInsets.all(16.w),
+        padding: EdgeInsets.all(12.w),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(8.r),
           border: Border.all(color: ColorsManager.lighterGray),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Icon(Icons.receipt_long, color: Colors.orange, size: 20.sp),
-                horizontalSpace(8.w),
-                Text(
-                  'Order Details & Calculations',
-                  style: TextStyles.font16WhiteSemiBold.copyWith(
-                    color: Colors.orange,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                children: [
+                  Icon(Icons.receipt_long, color: Colors.orange, size: 18.sp),
+                  horizontalSpace(6.w),
+                  Expanded(
+                    child: Text(
+                      'Order Details',
+                      style: TextStyles.font14DarkBlueMedium.copyWith(
+                        color: Colors.orange,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                ),
-              ],
-            ),
-            verticalSpace(16.h),
-            _buildDetailRow(
-              Icons.list,
-              'Subtotal',
-              '\$${subtotal.toStringAsFixed(2)}',
-              false,
-            ),
-            verticalSpace(12.h),
-            _buildDiscountRow(context),
-            verticalSpace(12.h),
-            const Divider(height: 32),
-            _buildTotalRow(),
-          ],
+                ],
+              ),
+              verticalSpace(10.h),
+              _buildDetailRow(
+                Icons.list,
+                'Subtotal',
+                '\$${subtotal.toStringAsFixed(2)}',
+                false,
+              ),
+              verticalSpace(8.h),
+              _buildDiscountRow(context),
+              Divider(height: 16.h),
+              _buildTotalRow(),
+            ],
+          ),
         ),
       ),
     );
@@ -140,7 +146,7 @@ class OrderDetailsSection extends StatelessWidget {
   ) {
     return Row(
       children: [
-        Icon(icon, color: ColorsManager.gray, size: 50.sp),
+        Icon(icon, color: ColorsManager.gray, size: 18.sp),
         horizontalSpace(8.w),
         Text(label, style: TextStyles.font14GrayRegular),
         const Spacer(),
@@ -173,7 +179,7 @@ class OrderDetailsSection extends StatelessWidget {
   Widget _buildDiscountRow(BuildContext context) {
     return Row(
       children: [
-        Icon(Icons.discount, color: Colors.red, size: 50.sp),
+        Icon(Icons.discount, color: Colors.red, size: 18.sp),
         horizontalSpace(8.w),
         Text('Discount', style: TextStyles.font14GrayRegular),
         const Spacer(),
@@ -194,7 +200,7 @@ class OrderDetailsSection extends StatelessWidget {
                         color: Colors.white,
                       ),
                     )
-                  : Icon(Icons.add, size: 50.sp),
+                  : Icon(Icons.add, size: 16.sp),
               label: Text(
                 isLoading ? 'Loading...' : 'Add',
                 style: TextStyles.font12GrayRegular.copyWith(
@@ -223,7 +229,7 @@ class OrderDetailsSection extends StatelessWidget {
   Widget _buildTotalRow() {
     return Row(
       children: [
-        Icon(Icons.check_circle, color: Colors.green, size: 50.sp),
+        Icon(Icons.check_circle, color: Colors.green, size: 20.sp),
         horizontalSpace(8.w),
         Text('Order Total', style: TextStyles.font18DarkBlueBold),
         const Spacer(),

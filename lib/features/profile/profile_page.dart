@@ -32,104 +32,118 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: EdgeInsets.all(16.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // User Info Section
-            Container(
-              padding: EdgeInsets.all(16.w),
-              decoration: BoxDecoration(
-                color: ColorsManager.lightBlue,
-                borderRadius: BorderRadius.circular(12.r),
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CircleAvatar(
-                    // radius: 32.sp,
-                    backgroundColor: ColorsManager.mainBlue,
-                    child: Icon(
-                      Icons.person,
-                      size: 120.sp,
-                      color: Colors.white,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isTablet = constraints.maxWidth > 600;
+
+        return Padding(
+          padding: EdgeInsets.all(16.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // User Info Section
+              Container(
+                padding: EdgeInsets.all(16.w),
+                decoration: BoxDecoration(
+                  color: ColorsManager.lightBlue,
+                  borderRadius: BorderRadius.circular(12.r),
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    CircleAvatar(
+                      radius: isTablet ? 32.r : 24.r,
+                      backgroundColor: ColorsManager.mainBlue,
+                      child: Icon(
+                        Icons.person,
+                        size: isTablet ? 32.sp : 24.sp,
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
-                  horizontalSpace(50.w),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Abdelrahman Shaban',
-                          style: TextStyles.font18DarkBlueBold,
-                        ),
-                        verticalSpace(4.h),
-                        Text(
-                          'abood.do@example.com',
-                          style: TextStyles.font14GrayRegular,
-                        ),
-                      ],
+                    horizontalSpace(16.w),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Abdelrahman Shaban',
+                            style: TextStyles.font18DarkBlueBold,
+                          ),
+                          verticalSpace(4.h),
+                          Text(
+                            'abood.do@example.com',
+                            style: TextStyles.font14GrayRegular,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            verticalSpace(24.h),
-            // Settings Section
-            Text('Settings', style: TextStyles.font18DarkBlueBold),
-            verticalSpace(12.h),
-            _buildSettingItem(
-              context,
-              icon: Icons.lock_outline,
-              title: 'Change Password',
-              subtitle: 'Update your password',
-              onTap: () => _showChangePasswordDialog(context),
-            ),
-            verticalSpace(12.h),
-
-            _buildSettingItem(
-              context,
-              icon: Icons.devices,
-              title: 'Link Terminal',
-              subtitle: 'Connect payment terminal',
-              onTap: () => _showLinkTerminalDialog(context),
-            ),
-            verticalSpace(12.h),
-
-            _buildSettingItem(
-              context,
-              icon: Icons.print,
-              title: 'Link Printer',
-              subtitle: selectedPrinter != null
-                  ? '${selectedPrinter!.name} (${selectedPrinter!.ip})'
-                  : 'Connect receipt printer',
-              onTap: () => _showLinkPrinterDialog(context),
-            ),
-            verticalSpace(24.h),
-
-            // Logout Button
-            SizedBox(
-              width: double.infinity,
-              child: OutlinedButton.icon(
-                onPressed: () => _showLogoutDialog(context),
-                icon: Icon(Icons.logout, size: 100.sp),
-                label: Text('Logout', style: TextStyles.font14DarkBlueMedium),
-                style: OutlinedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(vertical: 14.h),
-                  side: const BorderSide(color: ColorsManager.red),
-                  foregroundColor: ColorsManager.red,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.r),
+              verticalSpace(24.h),
+              // Settings Section
+              Text('Settings', style: TextStyles.font18DarkBlueBold),
+              verticalSpace(12.h),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      _buildSettingItem(
+                        context,
+                        icon: Icons.lock_outline,
+                        title: 'Change Password',
+                        subtitle: 'Update your password',
+                        onTap: () => _showChangePasswordDialog(context),
+                      ),
+                      verticalSpace(12.h),
+                      _buildSettingItem(
+                        context,
+                        icon: Icons.devices,
+                        title: 'Link Terminal',
+                        subtitle: 'Connect payment terminal',
+                        onTap: () => _showLinkTerminalDialog(context),
+                      ),
+                      verticalSpace(12.h),
+                      _buildSettingItem(
+                        context,
+                        icon: Icons.print,
+                        title: 'Link Printer',
+                        subtitle: selectedPrinter != null
+                            ? '${selectedPrinter!.name} (${selectedPrinter!.ip})'
+                            : 'Connect receipt printer',
+                        onTap: () => _showLinkPrinterDialog(context),
+                      ),
+                      verticalSpace(24.h),
+                      // Logout Button
+                      SizedBox(
+                        width: double.infinity,
+                        child: OutlinedButton.icon(
+                          onPressed: () => _showLogoutDialog(context),
+                          icon: Icon(Icons.logout, size: 20.sp),
+                          label: Text(
+                            'Logout',
+                            style: TextStyles.font14DarkBlueMedium,
+                          ),
+                          style: OutlinedButton.styleFrom(
+                            padding: EdgeInsets.symmetric(vertical: 14.h),
+                            side: const BorderSide(color: ColorsManager.red),
+                            foregroundColor: ColorsManager.red,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.r),
+                            ),
+                          ),
+                        ),
+                      ),
+                      verticalSpace(16.h),
+                    ],
                   ),
                 ),
               ),
-            ),
-          ],
-        ),
-      ),
+            ],
+          ),
+        );
+      },
     );
   }
 
@@ -157,10 +171,10 @@ class _ProfilePageState extends State<ProfilePage> {
             Container(
               padding: EdgeInsets.all(8.w),
               decoration: BoxDecoration(
-                color: ColorsManager.white,
+                color: ColorsManager.lightBlue.withOpacity(0.3),
                 borderRadius: BorderRadius.circular(8.r),
               ),
-              child: Icon(icon, size: 120.sp, color: ColorsManager.mainBlue),
+              child: Icon(icon, size: 24.sp, color: ColorsManager.mainBlue),
             ),
             horizontalSpace(16.w),
             Expanded(
@@ -175,7 +189,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             Icon(
               Icons.arrow_forward_ios,
-              size: 100.sp,
+              size: 16.sp,
               color: ColorsManager.gray,
             ),
           ],
@@ -273,7 +287,7 @@ class _ProfilePageState extends State<ProfilePage> {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.devices, size: 64.sp, color: ColorsManager.mainBlue),
+            Icon(Icons.devices, size: 48.sp, color: ColorsManager.mainBlue),
             verticalSpace(16.h),
             Text(
               'Search for available payment terminals',

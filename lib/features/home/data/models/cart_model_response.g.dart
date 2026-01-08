@@ -50,9 +50,9 @@ CartItemModel _$CartItemModelFromJson(Map<String, dynamic> json) =>
       cartItemId: json['cart_item_id'] as String?,
       type: json['type'] as String?,
       productName: json['product_name'] as String?,
-      price: json['price'] as String?,
+      price: CartItemModel._numToString(json['price']),
       quantity: (json['quantity'] as num?)?.toInt(),
-      subtotal: json['subtotal'] as String?,
+      subtotal: CartItemModel._numToString(json['subtotal']),
       rfidTagId: json['rfid_tag_id'] as String?,
       conditionType: json['condition_type'] as String?,
     );

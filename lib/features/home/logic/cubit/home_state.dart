@@ -14,6 +14,10 @@ class HomeState with _$HomeState {
       GetCartSuccess;
   const factory HomeState.getCartError(ApiErrorModel apiErrorModel) =
       GetCartError;
+
+  // Add RFID to Cart
+  const factory HomeState.addRfidToCartSuccess(List<CartData?>? getCartData) =
+      AddRfidToCartSuccess;
   const factory HomeState.addRfidToCartError(ApiErrorModel apiErrorModel) =
       AddRfidToCartError;
 
@@ -24,8 +28,10 @@ class HomeState with _$HomeState {
   const factory HomeState.deleteCartItemError(ApiErrorModel apiErrorModel) =
       DeleteCartItemError;
 
-  // Doctors
-  // const factory HomeState.doctorsSuccess(List<Doctors?>? doctorsList) =
-  //     DoctorsSuccess;
-  // const factory HomeState.doctorsError() = DoctorsError;
+  // Add Custom Item
+  const factory HomeState.addCustomItemLoading() = AddCustomItemLoading;
+  const factory HomeState.addCustomItemSuccess(List<CartData?>? getCartData) =
+      AddCustomItemSuccess;
+  const factory HomeState.addCustomItemError(ApiErrorModel apiErrorModel) =
+      AddCustomItemError;
 }

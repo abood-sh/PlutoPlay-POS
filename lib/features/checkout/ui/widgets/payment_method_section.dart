@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pos/core/helpers/spacing.dart';
 import 'package:pos/core/theming/colors.dart';
-import 'package:pos/core/theming/styles.dart';
 
 class PaymentMethodSection extends StatefulWidget {
   final Function(
@@ -65,56 +64,90 @@ class _PaymentMethodSectionState extends State<PaymentMethodSection> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(8.r),
+        borderRadius: BorderRadius.circular(12.r),
         border: Border.all(color: ColorsManager.lighterGray),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Row(
-            children: [
-              Icon(Icons.payment, color: ColorsManager.darkBlue, size: 50.sp),
-              horizontalSpace(3.w),
-              Expanded(
-                child: Text(
-                  'Payment Method',
-                  style: TextStyles.font16WhiteSemiBold.copyWith(
-                    color: ColorsManager.darkBlue,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                ),
+          // Header
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+            decoration: BoxDecoration(
+              color: ColorsManager.mainBlue,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(12.r),
+                topRight: Radius.circular(12.r),
               ),
-            ],
+            ),
+            child: Row(
+              children: [
+                Icon(Icons.payment, color: Colors.white, size: 20.sp),
+                horizontalSpace(4.w),
+                Text(
+                  'Payment',
+                  style: TextStyle(
+                    fontSize: 30.sp,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
           ),
-          verticalSpace(16.h),
-          GridView.count(
-            crossAxisCount: 3,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            mainAxisSpacing: 12.h,
-            crossAxisSpacing: 12.w,
-            childAspectRatio: 1.0,
-            children: [
-              _buildPaymentMethodCard('Cash', Icons.money, Colors.green),
-              _buildPaymentMethodCard('Card', Icons.credit_card, Colors.blue),
-              _buildPaymentMethodCard('Split', Icons.call_split, Colors.orange),
-            ],
+          // Content - compact
+          Padding(
+            padding: EdgeInsets.all(8.w),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Payment method buttons - compact row
+                Row(
+                  children: [
+                    Expanded(
+                      child: _buildPaymentMethodCard(
+                        'Cash',
+                        Icons.payments_outlined,
+                        Colors.green,
+                      ),
+                    ),
+                    horizontalSpace(4.w),
+                    Expanded(
+                      child: _buildPaymentMethodCard(
+                        'Card',
+                        Icons.credit_card,
+                        Colors.blue,
+                      ),
+                    ),
+                    horizontalSpace(4.w),
+                    Expanded(
+                      child: _buildPaymentMethodCard(
+                        'Split',
+                        Icons.call_split,
+                        Colors.orange,
+                      ),
+                    ),
+                  ],
+                ),
+                // Input fields - shown directly below
+                if (selectedMethod == 'Cash') ...[
+                  verticalSpace(8.h),
+                  _buildCashAmountField(),
+                ],
+                if (selectedMethod == 'Card') ...[
+                  verticalSpace(8.h),
+                  _buildReferenceNumberField(),
+                ],
+                if (selectedMethod == 'Split') ...[
+                  verticalSpace(8.h),
+                  _buildSplitPaymentFields(),
+                ],
+              ],
+            ),
           ),
-          if (selectedMethod == 'Cash') ...[
-            verticalSpace(16.h),
-            _buildCashAmountField(),
-          ],
-          if (selectedMethod == 'Card') ...[
-            verticalSpace(16.h),
-            _buildReferenceNumberField(),
-          ],
-          if (selectedMethod == 'Split') ...[
-            verticalSpace(16.h),
-            _buildSplitPaymentFields(),
-          ],
         ],
       ),
     );
@@ -123,15 +156,16 @@ class _PaymentMethodSectionState extends State<PaymentMethodSection> {
   Widget _buildReferenceNumberField() {
     return TextField(
       controller: _referenceController,
-      style: TextStyle(fontSize: 80.sp),
+      style: TextStyle(fontSize: 13.sp),
       onChanged: (_) => _notifySelection(),
       decoration: InputDecoration(
         labelText: 'Reference Number (Optional)',
-        labelStyle: TextStyles.font14GrayRegular,
+        labelStyle: TextStyle(fontSize: 12.sp, color: ColorsManager.gray),
         hintText: 'TXN-12345',
-        hintStyle: TextStyles.font12GrayRegular,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.r)),
-        contentPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
+        hintStyle: TextStyle(fontSize: 11.sp, color: ColorsManager.gray),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(6.r)),
+        contentPadding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+        isDense: true,
       ),
     );
   }
@@ -140,20 +174,22 @@ class _PaymentMethodSectionState extends State<PaymentMethodSection> {
     return TextField(
       controller: _cashController,
       keyboardType: TextInputType.number,
-      style: TextStyle(fontSize: 80.sp),
+      style: TextStyle(fontSize: 13.sp),
       onChanged: (_) => _notifySelection(),
       decoration: InputDecoration(
         labelText: 'Cash Amount',
-        labelStyle: TextStyles.font14GrayRegular,
+        labelStyle: TextStyle(fontSize: 12.sp, color: ColorsManager.gray),
         prefixText: '\$ ',
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.r)),
-        contentPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(6.r)),
+        contentPadding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+        isDense: true,
       ),
     );
   }
 
   Widget _buildSplitPaymentFields() {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         Row(
           children: [
@@ -161,62 +197,71 @@ class _PaymentMethodSectionState extends State<PaymentMethodSection> {
               child: TextField(
                 controller: _cashController,
                 keyboardType: TextInputType.number,
-                style: TextStyle(fontSize: 80.sp),
+                style: TextStyle(fontSize: 13.sp),
                 onChanged: (_) => _notifySelection(),
                 decoration: InputDecoration(
-                  labelText: 'Cash Amount',
-                  labelStyle: TextStyles.font14GrayRegular,
+                  labelText: 'Cash',
+                  labelStyle: TextStyle(
+                    fontSize: 11.sp,
+                    color: ColorsManager.gray,
+                  ),
                   prefixText: '\$ ',
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.r),
+                    borderRadius: BorderRadius.circular(6.r),
                   ),
                   contentPadding: EdgeInsets.symmetric(
-                    horizontal: 12.w,
-                    vertical: 12.h,
+                    horizontal: 8.w,
+                    vertical: 10.h,
                   ),
+                  isDense: true,
                 ),
               ),
             ),
-            horizontalSpace(12.w),
+            horizontalSpace(8.w),
             Expanded(
               child: TextField(
                 controller: _cardController,
                 keyboardType: TextInputType.number,
-                style: TextStyle(fontSize: 80.sp),
+                style: TextStyle(fontSize: 13.sp),
                 onChanged: (_) => _notifySelection(),
                 decoration: InputDecoration(
-                  labelText: 'Card Amount',
-                  labelStyle: TextStyles.font14GrayRegular,
+                  labelText: 'Card',
+                  labelStyle: TextStyle(
+                    fontSize: 11.sp,
+                    color: ColorsManager.gray,
+                  ),
                   prefixText: '\$ ',
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.r),
+                    borderRadius: BorderRadius.circular(6.r),
                   ),
                   contentPadding: EdgeInsets.symmetric(
-                    horizontal: 12.w,
-                    vertical: 12.h,
+                    horizontal: 8.w,
+                    vertical: 10.h,
                   ),
+                  isDense: true,
                 ),
               ),
             ),
           ],
         ),
-        verticalSpace(12.h),
+        verticalSpace(8.h),
         TextField(
           controller: _referenceController,
-          style: TextStyle(fontSize: 80.sp),
+          style: TextStyle(fontSize: 13.sp),
           onChanged: (_) => _notifySelection(),
           decoration: InputDecoration(
-            labelText: 'Card Reference Number (Optional)',
-            labelStyle: TextStyles.font14GrayRegular,
+            labelText: 'Card Ref# (Optional)',
+            labelStyle: TextStyle(fontSize: 11.sp, color: ColorsManager.gray),
             hintText: 'TXN-12345',
-            hintStyle: TextStyles.font12GrayRegular,
+            hintStyle: TextStyle(fontSize: 11.sp, color: ColorsManager.gray),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8.r),
+              borderRadius: BorderRadius.circular(6.r),
             ),
             contentPadding: EdgeInsets.symmetric(
-              horizontal: 12.w,
-              vertical: 12.h,
+              horizontal: 8.w,
+              vertical: 10.h,
             ),
+            isDense: true,
           ),
         ),
       ],
@@ -241,9 +286,10 @@ class _PaymentMethodSectionState extends State<PaymentMethodSection> {
         _notifySelection();
       },
       child: Container(
+        padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 6.w),
         decoration: BoxDecoration(
           color: isSelected ? color.withOpacity(0.1) : Colors.white,
-          borderRadius: BorderRadius.circular(8.r),
+          borderRadius: BorderRadius.circular(6.r),
           border: Border.all(
             color: isSelected ? color : ColorsManager.lighterGray,
             width: isSelected ? 2 : 1,
@@ -253,11 +299,12 @@ class _PaymentMethodSectionState extends State<PaymentMethodSection> {
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, color: color, size: 100.sp),
-            verticalSpace(4.h),
+            Icon(icon, color: color, size: 22.sp),
+            verticalSpace(2.h),
             Text(
               label,
-              style: TextStyles.font12GrayRegular.copyWith(
+              style: TextStyle(
+                fontSize: 11.sp,
                 color: isSelected ? color : ColorsManager.darkBlue,
                 fontWeight: FontWeight.w500,
               ),

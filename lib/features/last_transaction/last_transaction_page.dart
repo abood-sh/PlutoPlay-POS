@@ -13,7 +13,7 @@ class LastTransactionPage extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.history, size: 64.sp, color: ColorsManager.lightGray),
+          Icon(Icons.history, size: 48.sp, color: ColorsManager.lightGray),
           verticalSpace(16.h),
           Text('Last Transaction', style: TextStyles.font18DarkBlueBold),
           verticalSpace(8.h),

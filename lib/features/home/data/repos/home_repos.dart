@@ -1,6 +1,7 @@
 import 'package:pos/core/networking/api_result.dart';
 import 'package:pos/core/networking/api_service.dart';
 import 'package:pos/features/home/data/models/add_rfid_request_model.dart';
+import 'package:pos/features/home/data/models/add_custom_item_request.dart';
 import 'package:pos/features/home/data/models/add_rfid_response_model.dart';
 import 'package:pos/features/home/data/models/cart_model_response.dart';
 
@@ -35,6 +36,17 @@ class HomeRepo {
     try {
       final path = '/cart/item/$cartItemId';
       final response = await _apiService.deleteCartItem(path);
+      return ApiResult.success(response);
+    } catch (error) {
+      return ApiResult.failure(ApiErrorHandler.handle(error));
+    }
+  }
+
+  Future<ApiResult<CartResponseModel>> addCustomItem(
+    AddCustomItemRequest request,
+  ) async {
+    try {
+      final response = await _apiService.addCustomItem(request);
       return ApiResult.success(response);
     } catch (error) {
       return ApiResult.failure(ApiErrorHandler.handle(error));

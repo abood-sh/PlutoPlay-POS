@@ -27,7 +27,7 @@ class BottomNavBar extends StatelessWidget {
           unselectedItemColor: ColorsManager.gray,
           // selectedLabelStyle: TextStyles.font12DarkBlueRegular,
           // unselectedLabelStyle: TextStyles.font12GrayRegular,
-          iconSize: 100.sp,
+          iconSize: 50.sp,
 
           // selectedFontSize: 200.sp,
           // unselectedFontSize: 10.sp,

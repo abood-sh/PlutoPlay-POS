@@ -9,11 +9,9 @@ import 'package:pos/core/theming/colors.dart';
 import 'package:pos/core/theming/styles.dart';
 import 'package:pos/features/checkout/logic/cubit/checkout_cubit.dart';
 import 'package:pos/features/checkout/logic/cubit/checkout_state.dart';
-import 'package:pos/features/checkout/ui/widgets/checkout_header.dart';
 import 'package:pos/features/checkout/ui/widgets/order_details_section.dart';
 import 'package:pos/features/checkout/ui/widgets/order_items_section.dart';
 import 'package:pos/features/checkout/ui/widgets/payment_method_section.dart';
-import 'package:pos/features/checkout/ui/widgets/payment_summary_section.dart';
 
 class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({super.key});
@@ -107,6 +105,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       body: SafeArea(
         child: BlocConsumer<CheckoutCubit, CheckoutState>(
           listener: (context, state) {
@@ -256,98 +255,123 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
   Widget _buildMobileLayout(BuildContext context, bool isProcessing) {
     final cubit = context.read<CheckoutCubit>();
-    return Column(
-      children: [
-        const CheckoutHeader(),
-        Expanded(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.all(16.w),
-              child: Column(
-                children: [
-                  OrderItemsSection(items: cubit.items),
-                  verticalSpace(24.h),
-                  OrderDetailsSection(
-                    subtotal: cubit.subtotal,
-                    taxAmount: cubit.taxAmount,
-                    discountAmount: cubit.discountAmount,
-                    total: cubit.total,
-                  ),
-                  verticalSpace(24.h),
-                  PaymentSummarySection(
-                    subtotal: cubit.subtotal,
-                    taxAmount: cubit.taxAmount,
-                    discountAmount: cubit.discountAmount,
-                    total: cubit.total,
-                  ),
-                  verticalSpace(24.h),
-                  PaymentMethodSection(
-                    onMethodSelected: _handlePaymentMethodSelected,
-                  ),
-                  verticalSpace(24.h),
-                  _buildPayButton(context, isProcessing),
-                ],
+    return Padding(
+      padding: EdgeInsets.all(12.w),
+      child: CustomScrollView(
+        slivers: [
+          // Back button row
+          SliverToBoxAdapter(
+            child: Row(
+              children: [
+                IconButton(
+                  onPressed: () => Navigator.pop(context),
+                  icon: Icon(Icons.arrow_back, size: 24.sp),
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(),
+                ),
+                horizontalSpace(8.w),
+                Text('Checkout', style: TextStyles.font18DarkBlueBold),
+              ],
+            ),
+          ),
+          SliverToBoxAdapter(child: verticalSpace(8.h)),
+          // Order Items
+          SliverToBoxAdapter(
+            child: SizedBox(
+              height: 200.h,
+              child: OrderItemsSection(items: cubit.items),
+            ),
+          ),
+          SliverToBoxAdapter(child: verticalSpace(8.h)),
+          // Order Details
+          SliverToBoxAdapter(
+            child: OrderDetailsSection(
+              subtotal: cubit.subtotal,
+              taxAmount: cubit.taxAmount,
+              discountAmount: cubit.discountAmount,
+              total: cubit.total,
+            ),
+          ),
+          SliverToBoxAdapter(child: verticalSpace(8.h)),
+          // Payment Method
+          SliverToBoxAdapter(
+            child: SizedBox(
+              height: 200.h,
+              child: PaymentMethodSection(
+                onMethodSelected: _handlePaymentMethodSelected,
               ),
             ),
           ),
-        ),
-      ],
+          SliverToBoxAdapter(child: verticalSpace(8.h)),
+          // Pay Button
+          SliverToBoxAdapter(child: _buildPayButton(context, isProcessing)),
+        ],
+      ),
     );
   }
 
   Widget _buildTabletLayout(BuildContext context, bool isProcessing) {
     final cubit = context.read<CheckoutCubit>();
-    return Column(
-      children: [
-        const CheckoutHeader(),
-        Expanded(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.all(24.w),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    flex: 3,
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+      child: Column(
+        children: [
+          // Minimal back button row
+          Row(
+            children: [
+              IconButton(
+                onPressed: () => Navigator.pop(context),
+                icon: Icon(Icons.arrow_back, size: 22.sp),
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
+              ),
+              horizontalSpace(8.w),
+              Text('Checkout', style: TextStyles.font18DarkBlueBold),
+            ],
+          ),
+          verticalSpace(8.h),
+          // Main content in horizontal layout
+          Expanded(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // Left: Order Items (largest section)
+                Expanded(flex: 3, child: OrderItemsSection(items: cubit.items)),
+                horizontalSpace(12.w),
+                // Right: Order Details + Payment stacked - fully scrollable
+                Expanded(
+                  flex: 2,
+                  child: SingleChildScrollView(
                     child: Column(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        OrderItemsSection(items: cubit.items),
-                        verticalSpace(24.h),
+                        // Order Details (compact)
                         OrderDetailsSection(
                           subtotal: cubit.subtotal,
                           taxAmount: cubit.taxAmount,
                           discountAmount: cubit.discountAmount,
                           total: cubit.total,
                         ),
-                      ],
-                    ),
-                  ),
-                  horizontalSpace(24.w),
-                  Expanded(
-                    flex: 2,
-                    child: Column(
-                      children: [
-                        PaymentSummarySection(
-                          subtotal: cubit.subtotal,
-                          taxAmount: cubit.taxAmount,
-                          discountAmount: cubit.discountAmount,
-                          total: cubit.total,
+                        verticalSpace(8.h),
+                        // Payment section
+                        SizedBox(
+                          height: 220.h,
+                          child: PaymentMethodSection(
+                            onMethodSelected: _handlePaymentMethodSelected,
+                          ),
                         ),
-                        verticalSpace(24.h),
-                        PaymentMethodSection(
-                          onMethodSelected: _handlePaymentMethodSelected,
-                        ),
-                        verticalSpace(24.h),
+                        verticalSpace(8.h),
+                        // Pay button with change display
                         _buildPayButton(context, isProcessing),
                       ],
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -355,32 +379,58 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     final change = _calculateChange(context);
 
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         if (change != null && change > 0) ...[
           Container(
             width: double.infinity,
-            padding: EdgeInsets.all(12.w),
+            padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 20.w),
             decoration: BoxDecoration(
-              color: Colors.green.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(8.r),
-              border: Border.all(color: Colors.green),
+              gradient: LinearGradient(
+                colors: [Colors.green.shade600, Colors.green.shade400],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.circular(12.r),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.green.withOpacity(0.3),
+                  blurRadius: 8,
+                  offset: const Offset(0, 4),
+                ),
+              ],
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            child: Column(
               children: [
-                Icon(Icons.info_outline, color: Colors.green, size: 20.sp),
-                horizontalSpace(8.w),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.attach_money, color: Colors.white, size: 28.sp),
+                    horizontalSpace(8.w),
+                    Text(
+                      'CHANGE DUE',
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white.withOpacity(0.9),
+                        letterSpacing: 1.2,
+                      ),
+                    ),
+                  ],
+                ),
+                verticalSpace(8.h),
                 Text(
-                  'Give back change: \$${change.toStringAsFixed(2)}',
-                  style: TextStyles.font14DarkBlueMedium.copyWith(
-                    color: Colors.green,
+                  '\$${change.toStringAsFixed(2)}',
+                  style: TextStyle(
+                    fontSize: 36.sp,
                     fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
                 ),
               ],
             ),
           ),
-          verticalSpace(12.h),
+          verticalSpace(10.h),
         ],
         SizedBox(
           width: double.infinity,
@@ -388,7 +438,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             onPressed: isProcessing ? null : () => _processPayment(context),
             style: ElevatedButton.styleFrom(
               backgroundColor: ColorsManager.mainBlue,
-              padding: EdgeInsets.symmetric(vertical: 16.h),
+              padding: EdgeInsets.symmetric(vertical: 14.h),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.r),
               ),

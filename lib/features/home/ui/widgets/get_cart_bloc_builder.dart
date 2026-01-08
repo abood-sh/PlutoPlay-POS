@@ -12,43 +12,149 @@ class GetCartBlocBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12.r),
+        border: Border.all(color: ColorsManager.lighterGray),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+            decoration: BoxDecoration(
+              color: ColorsManager.darkBlue,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(12.r),
+                topRight: Radius.circular(12.r),
+              ),
+            ),
+            child: Row(
+              children: [
+                Icon(Icons.shopping_cart, color: Colors.white, size: 20.sp),
+                horizontalSpace(8.w),
+                Text('Current Sale', style: TextStyles.font16WhiteSemiBold),
+                const Spacer(),
+                BlocBuilder<HomeCubit, HomeState>(
+                  builder: (context, state) {
+                    int itemCount = 0;
+                    state.maybeWhen(
+                      getCartSuccess: (cartData) {
+                        if (cartData != null &&
+                            cartData.isNotEmpty &&
+                            cartData.first != null) {
+                          itemCount = cartData.first!.items?.length ?? 0;
+                        }
+                      },
+                      addRfidToCartSuccess: (cartData) {
+                        if (cartData != null &&
+                            cartData.isNotEmpty &&
+                            cartData.first != null) {
+                          itemCount = cartData.first!.items?.length ?? 0;
+                        }
+                      },
+                      addCustomItemSuccess: (cartData) {
+                        if (cartData != null &&
+                            cartData.isNotEmpty &&
+                            cartData.first != null) {
+                          itemCount = cartData.first!.items?.length ?? 0;
+                        }
+                      },
+                      deleteCartItemSuccess: (cartData) {
+                        if (cartData != null &&
+                            cartData.isNotEmpty &&
+                            cartData.first != null) {
+                          itemCount = cartData.first!.items?.length ?? 0;
+                        }
+                      },
+                      orElse: () {},
+                    );
+                    return Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 10.w,
+                        vertical: 4.h,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
+                      child: Text(
+                        '$itemCount items',
+                        style: TextStyles.font12GrayRegular.copyWith(
+                          color: Colors.white,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: RefreshIndicator(
+              onRefresh: () async {
+                context.read<HomeCubit>().getCart();
+              },
+              child: BlocBuilder<HomeCubit, HomeState>(
+                buildWhen: (previous, current) =>
+                    current is GetCartLoading ||
+                    current is GetCartSuccess ||
+                    current is GetCartError ||
+                    current is AddRfidToCartSuccess ||
+                    current is AddCustomItemLoading ||
+                    current is AddCustomItemSuccess ||
+                    current is AddCustomItemError ||
+                    current is DeleteCartItemLoading ||
+                    current is DeleteCartItemSuccess ||
+                    current is DeleteCartItemError,
+                builder: (context, state) {
+                  return state.maybeWhen(
+                    getCartLoading: () => setupLoading(),
+                    getCartSuccess: (cartData) =>
+                        setupSuccess(context, cartData),
+                    getCartError: (errorHandler) => setupError(context),
+                    addRfidToCartSuccess: (cartData) =>
+                        setupSuccess(context, cartData),
+                    addCustomItemLoading: () => setupLoading(),
+                    addCustomItemSuccess: (cartData) =>
+                        setupSuccess(context, cartData),
+                    addCustomItemError: (errorHandler) => setupError(context),
+                    deleteCartItemLoading: () => setupLoading(),
+                    deleteCartItemSuccess: (cartData) =>
+                        setupSuccess(context, cartData),
+                    deleteCartItemError: (errorHandler) => setupError(context),
+                    orElse: () => _buildEmptyCart(context),
+                  );
+                },
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildEmptyCart(BuildContext context) {
+    return ListView(
+      physics: const AlwaysScrollableScrollPhysics(),
       children: [
-        Text('Current Sale', style: TextStyles.font18DarkBlueBold),
-        BlocBuilder<HomeCubit, HomeState>(
-          buildWhen: (previous, current) =>
-              current is GetCartLoading ||
-              current is GetCartSuccess ||
-              current is GetCartError ||
-              current is DeleteCartItemLoading ||
-              current is DeleteCartItemSuccess ||
-              current is DeleteCartItemError,
-          builder: (context, state) {
-            return state.maybeWhen(
-              getCartLoading: () {
-                return setupLoading();
-              },
-              getCartSuccess: (cartData) {
-                return setupSuccess(context, cartData);
-              },
-              getCartError: (errorHandler) {
-                return setupError();
-              },
-              deleteCartItemLoading: () {
-                return setupLoading();
-              },
-              deleteCartItemSuccess: (cartData) {
-                return setupSuccess(context, cartData);
-              },
-              deleteCartItemError: (errorHandler) {
-                return setupError();
-              },
-              orElse: () {
-                return const SizedBox.shrink();
-              },
-            );
-          },
+        SizedBox(height: 100.h),
+        Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.shopping_cart_outlined,
+                size: 48.sp,
+                color: ColorsManager.lightGray,
+              ),
+              verticalSpace(12.h),
+              Text('Cart is empty', style: TextStyles.font14GrayRegular),
+              verticalSpace(4.h),
+              Text('Pull down to refresh', style: TextStyles.font12GrayRegular),
+            ],
+          ),
         ),
       ],
     );
@@ -60,17 +166,20 @@ class GetCartBlocBuilder extends StatelessWidget {
 
   Widget setupSuccess(BuildContext context, cartData) {
     if (cartData == null || cartData.isEmpty || cartData.first == null) {
-      return const Center(child: Text('Cart is empty'));
+      return _buildEmptyCart(context);
     }
 
     final cart = cartData.first!;
     final items = cart.items ?? [];
 
-    return ListView.separated(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
+    if (items.isEmpty) {
+      return _buildEmptyCart(context);
+    }
+
+    return ListView.builder(
+      padding: EdgeInsets.all(8.w),
+      physics: const AlwaysScrollableScrollPhysics(),
       itemCount: items.length,
-      separatorBuilder: (context, index) => verticalSpace(12.h),
       itemBuilder: (context, index) {
         final item = items[index];
         return Dismissible(
@@ -78,12 +187,13 @@ class GetCartBlocBuilder extends StatelessWidget {
           direction: DismissDirection.endToStart,
           background: Container(
             alignment: Alignment.centerRight,
+            margin: EdgeInsets.symmetric(vertical: 4.h),
             padding: EdgeInsets.only(right: 20.w),
             decoration: BoxDecoration(
               color: Colors.red,
               borderRadius: BorderRadius.circular(8.r),
             ),
-            child: Icon(Icons.delete, color: Colors.white, size: 100.sp),
+            child: Icon(Icons.delete_outline, color: Colors.white, size: 24.sp),
           ),
           onDismissed: (direction) {
             if (item?.cartItemId != null) {
@@ -91,28 +201,29 @@ class GetCartBlocBuilder extends StatelessWidget {
             }
           },
           child: Container(
-            padding: EdgeInsets.all(16.w),
+            margin: EdgeInsets.symmetric(vertical: 4.h),
+            padding: EdgeInsets.all(12.w),
             decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(color: ColorsManager.lighterGray),
+              color: ColorsManager.lighterGray.withOpacity(0.3),
               borderRadius: BorderRadius.circular(8.r),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
-                  blurRadius: 4,
-                  offset: const Offset(0, 2),
-                ),
-              ],
             ),
             child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Icon(
-                    Icons.shopping_cart,
-                    color: ColorsManager.gray,
-                    size: 100.sp,
+                Container(
+                  width: 40.w,
+                  height: 40.w,
+                  decoration: BoxDecoration(
+                    color: ColorsManager.mainBlue.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8.r),
+                  ),
+                  child: Center(
+                    child: Text(
+                      '${item?.quantity ?? 1}x',
+                      style: TextStyles.font14DarkBlueMedium.copyWith(
+                        color: ColorsManager.mainBlue,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
                 horizontalSpace(12.w),
@@ -123,21 +234,22 @@ class GetCartBlocBuilder extends StatelessWidget {
                       Text(
                         item?.productName ?? '',
                         style: TextStyles.font14DarkBlueMedium,
-                        maxLines: 2,
+                        maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      verticalSpace(4.h),
+                      verticalSpace(2.h),
                       Text(
-                        'Qty: ${item?.quantity ?? 0} x \$${item?.price ?? '0.00'}',
+                        '\$${item?.price ?? '0.00'}',
                         style: TextStyles.font12GrayRegular,
                       ),
                     ],
                   ),
                 ),
-                horizontalSpace(12.w),
                 Text(
                   '\$${item?.subtotal ?? '0.00'}',
-                  style: TextStyles.font18DarkBlueBold,
+                  style: TextStyles.font16WhiteSemiBold.copyWith(
+                    color: ColorsManager.darkBlue,
+                  ),
                 ),
               ],
             ),
@@ -147,7 +259,24 @@ class GetCartBlocBuilder extends StatelessWidget {
     );
   }
 
-  Widget setupError() {
-    return const Center(child: Text('Error loading cart'));
+  Widget setupError(BuildContext context) {
+    return ListView(
+      physics: const AlwaysScrollableScrollPhysics(),
+      children: [
+        SizedBox(height: 100.h),
+        Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.error_outline, size: 48.sp, color: Colors.red),
+              verticalSpace(12.h),
+              Text('Error loading cart', style: TextStyles.font14GrayRegular),
+              verticalSpace(4.h),
+              Text('Pull down to refresh', style: TextStyles.font12GrayRegular),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 }

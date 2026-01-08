@@ -123,236 +123,242 @@ class _DiscountPasswordDialogState extends State<DiscountPasswordDialog> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth > 600;
 
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
       insetPadding: EdgeInsets.symmetric(horizontal: 40.w, vertical: 24.h),
-      child: SizedBox(
-        width: screenWidth * 0.5, // 50% of screen width
-        child: Padding(
-          padding: EdgeInsets.all(24.w),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Header
-                Row(
-                  children: [
-                    Icon(
-                      _passwordValidated ? Icons.discount : Icons.lock,
-                      color: Colors.orange,
-                      size: 80.sp,
-                    ),
-                    horizontalSpace(12.w),
-                    Expanded(
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxWidth: isTablet ? screenWidth * 0.4 : screenWidth * 0.85,
+          maxHeight: MediaQuery.of(context).size.height * 0.7,
+        ),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.all(20.w),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Header
+                  Row(
+                    children: [
+                      Icon(
+                        _passwordValidated ? Icons.discount : Icons.lock,
+                        color: Colors.orange,
+                        size: 32.sp,
+                      ),
+                      horizontalSpace(10.w),
+                      Expanded(
+                        child: Text(
+                          _passwordValidated
+                              ? 'Apply Discount'
+                              : 'Enter Password',
+                          style: TextStyles.font18DarkBlueBold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  verticalSpace(16.h),
+
+                  // Step 1: Password input (if not yet validated)
+                  if (!_passwordValidated) ...[
+                    SizedBox(
+                      width: double.infinity,
                       child: Text(
-                        _passwordValidated
-                            ? 'Apply Discount'
-                            : 'Enter Password',
-                        style: TextStyles.font18DarkBlueBold,
+                        'Enter Discount Password',
+                        style: TextStyles.font14DarkBlueMedium,
                       ),
                     ),
-                  ],
-                ),
-                verticalSpace(24.h),
+                    verticalSpace(8.h),
+                    TextFormField(
+                      controller: _passwordController,
+                      obscureText: _obscurePassword,
+                      autofocus: true,
+                      decoration: InputDecoration(
+                        hintText: 'Password',
+                        prefixIcon: const Icon(Icons.lock),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _obscurePassword
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _obscurePassword = !_obscurePassword;
+                            });
+                          },
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                        errorText: _passwordError,
+                      ),
+                      onChanged: (_) {
+                        if (_passwordError != null) {
+                          setState(() {
+                            _passwordError = null;
+                          });
+                        }
+                      },
+                      onFieldSubmitted: (_) => _validatePassword(),
+                    ),
+                    verticalSpace(24.h),
 
-                // Step 1: Password input (if not yet validated)
-                if (!_passwordValidated) ...[
-                  SizedBox(
-                    width: double.infinity,
-                    child: Text(
-                      'Enter Discount Password',
+                    // Password buttons
+                    Row(
+                      children: [
+                        Expanded(
+                          child: OutlinedButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            style: OutlinedButton.styleFrom(
+                              padding: EdgeInsets.symmetric(vertical: 14.h),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.r),
+                              ),
+                            ),
+                            child: Text(
+                              'Cancel',
+                              style: TextStyles.font14DarkBlueMedium,
+                            ),
+                          ),
+                        ),
+                        horizontalSpace(12.w),
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: _isValidating ? null : _validatePassword,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: ColorsManager.darkBlue,
+                              padding: EdgeInsets.symmetric(vertical: 14.h),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.r),
+                              ),
+                            ),
+                            child: _isValidating
+                                ? SizedBox(
+                                    width: 20.w,
+                                    height: 20.h,
+                                    child: const CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: Colors.white,
+                                    ),
+                                  )
+                                : Text(
+                                    'Verify',
+                                    style: TextStyles.font14WhiteSemiBold,
+                                  ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+
+                  // Step 2: Discount input (after password validated)
+                  if (_passwordValidated) ...[
+                    // Success indicator if password was required
+                    if (widget.requiresPassword) ...[
+                      Container(
+                        padding: EdgeInsets.all(12.w),
+                        decoration: BoxDecoration(
+                          color: Colors.green.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(8.r),
+                          border: Border.all(
+                            color: Colors.green.withOpacity(0.3),
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.check_circle,
+                              color: Colors.green,
+                              size: 20.sp,
+                            ),
+                            horizontalSpace(8.w),
+                            Text(
+                              'Password verified',
+                              style: TextStyles.font14DarkBlueMedium.copyWith(
+                                color: Colors.green,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      verticalSpace(16.h),
+                    ],
+
+                    Text(
+                      'Discount Percentage',
                       style: TextStyles.font14DarkBlueMedium,
                     ),
-                  ),
-                  verticalSpace(8.h),
-                  TextFormField(
-                    controller: _passwordController,
-                    obscureText: _obscurePassword,
-                    autofocus: true,
-                    decoration: InputDecoration(
-                      hintText: 'Password',
-                      prefixIcon: const Icon(Icons.lock),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _obscurePassword
-                              ? Icons.visibility_off
-                              : Icons.visibility,
+                    verticalSpace(8.h),
+                    TextFormField(
+                      controller: _discountController,
+                      keyboardType: TextInputType.number,
+                      autofocus: true,
+                      decoration: InputDecoration(
+                        hintText: 'Enter discount %',
+                        prefixIcon: const Icon(Icons.percent),
+                        suffixText: '%',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.r),
                         ),
-                        onPressed: () {
+                        helperText: 'Max: ${widget.maxDiscountPercentage}%',
+                        errorText: _discountError,
+                      ),
+                      onChanged: (_) {
+                        if (_discountError != null) {
                           setState(() {
-                            _obscurePassword = !_obscurePassword;
+                            _discountError = null;
                           });
-                        },
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                      errorText: _passwordError,
+                        }
+                      },
+                      onFieldSubmitted: (_) => _applyDiscount(),
                     ),
-                    onChanged: (_) {
-                      if (_passwordError != null) {
-                        setState(() {
-                          _passwordError = null;
-                        });
-                      }
-                    },
-                    onFieldSubmitted: (_) => _validatePassword(),
-                  ),
-                  verticalSpace(24.h),
+                    verticalSpace(24.h),
 
-                  // Password buttons
-                  Row(
-                    children: [
-                      Expanded(
-                        child: OutlinedButton(
-                          onPressed: () => Navigator.of(context).pop(),
-                          style: OutlinedButton.styleFrom(
-                            padding: EdgeInsets.symmetric(vertical: 14.h),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.r),
+                    // Discount buttons
+                    Row(
+                      children: [
+                        Expanded(
+                          child: OutlinedButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            style: OutlinedButton.styleFrom(
+                              padding: EdgeInsets.symmetric(vertical: 14.h),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.r),
+                              ),
+                            ),
+                            child: Text(
+                              'Cancel',
+                              style: TextStyles.font14DarkBlueMedium,
                             ),
                           ),
-                          child: Text(
-                            'Cancel',
-                            style: TextStyles.font14DarkBlueMedium,
-                          ),
                         ),
-                      ),
-                      horizontalSpace(12.w),
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed: _isValidating ? null : _validatePassword,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: ColorsManager.darkBlue,
-                            padding: EdgeInsets.symmetric(vertical: 14.h),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.r),
+                        horizontalSpace(12.w),
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: _applyDiscount,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.orange,
+                              padding: EdgeInsets.symmetric(vertical: 14.h),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.r),
+                              ),
+                            ),
+                            child: Text(
+                              'Apply Discount',
+                              style: TextStyles.font14WhiteSemiBold,
                             ),
                           ),
-                          child: _isValidating
-                              ? SizedBox(
-                                  width: 20.w,
-                                  height: 20.h,
-                                  child: const CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                    color: Colors.white,
-                                  ),
-                                )
-                              : Text(
-                                  'Verify',
-                                  style: TextStyles.font14WhiteSemiBold,
-                                ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
-
-                // Step 2: Discount input (after password validated)
-                if (_passwordValidated) ...[
-                  // Success indicator if password was required
-                  if (widget.requiresPassword) ...[
-                    Container(
-                      padding: EdgeInsets.all(12.w),
-                      decoration: BoxDecoration(
-                        color: Colors.green.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(8.r),
-                        border: Border.all(
-                          color: Colors.green.withOpacity(0.3),
-                        ),
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.check_circle,
-                            color: Colors.green,
-                            size: 20.sp,
-                          ),
-                          horizontalSpace(8.w),
-                          Text(
-                            'Password verified',
-                            style: TextStyles.font14DarkBlueMedium.copyWith(
-                              color: Colors.green,
-                            ),
-                          ),
-                        ],
-                      ),
+                      ],
                     ),
-                    verticalSpace(16.h),
                   ],
-
-                  Text(
-                    'Discount Percentage',
-                    style: TextStyles.font14DarkBlueMedium,
-                  ),
-                  verticalSpace(8.h),
-                  TextFormField(
-                    controller: _discountController,
-                    keyboardType: TextInputType.number,
-                    autofocus: true,
-                    decoration: InputDecoration(
-                      hintText: 'Enter discount %',
-                      prefixIcon: const Icon(Icons.percent),
-                      suffixText: '%',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                      helperText: 'Max: ${widget.maxDiscountPercentage}%',
-                      errorText: _discountError,
-                    ),
-                    onChanged: (_) {
-                      if (_discountError != null) {
-                        setState(() {
-                          _discountError = null;
-                        });
-                      }
-                    },
-                    onFieldSubmitted: (_) => _applyDiscount(),
-                  ),
-                  verticalSpace(24.h),
-
-                  // Discount buttons
-                  Row(
-                    children: [
-                      Expanded(
-                        child: OutlinedButton(
-                          onPressed: () => Navigator.of(context).pop(),
-                          style: OutlinedButton.styleFrom(
-                            padding: EdgeInsets.symmetric(vertical: 14.h),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.r),
-                            ),
-                          ),
-                          child: Text(
-                            'Cancel',
-                            style: TextStyles.font14DarkBlueMedium,
-                          ),
-                        ),
-                      ),
-                      horizontalSpace(12.w),
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed: _applyDiscount,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.orange,
-                            padding: EdgeInsets.symmetric(vertical: 14.h),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.r),
-                            ),
-                          ),
-                          child: Text(
-                            'Apply Discount',
-                            style: TextStyles.font14WhiteSemiBold,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
                 ],
-              ],
+              ),
             ),
           ),
         ),

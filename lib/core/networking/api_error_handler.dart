@@ -1,9 +1,14 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 
 import 'api_error_model.dart';
 
 class ApiErrorHandler {
   static ApiErrorModel handle(dynamic error) {
+    // Log the error for debugging
+    debugPrint('API Error: $error');
+    debugPrint('Error type: ${error.runtimeType}');
+
     if (error is DioException) {
       switch (error.type) {
         case DioExceptionType.connectionError:
@@ -31,7 +36,9 @@ class ApiErrorHandler {
           return ApiErrorModel(message: "Something went wrong");
       }
     } else {
-      return ApiErrorModel(message: "Unknown error occurred");
+      // Print the actual error message for debugging
+      debugPrint('Non-Dio Error: ${error.toString()}');
+      return ApiErrorModel(message: error.toString());
     }
   }
 }

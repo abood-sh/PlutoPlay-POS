@@ -7,7 +7,8 @@ import 'package:pos/features/home/logic/cubit/home_cubit.dart';
 import 'package:pos/features/home/logic/cubit/navigation_cubit.dart';
 import 'package:pos/features/home/ui/home_screen.dart';
 import 'package:pos/features/last_transaction/last_transaction_page.dart';
-import 'package:pos/features/profile/profile_page.dart';
+import 'package:pos/features/profile/logic/cubit/profile_cubit.dart';
+import 'package:pos/features/profile/ui/profile_screen.dart';
 import 'package:pos/features/refund/refund_page.dart';
 
 class BottomNavBar extends StatelessWidget {
@@ -53,7 +54,12 @@ final List<Widget> pages = [
   ),
   const RefundPage(),
   const LastTransactionPage(),
-  const ProfilePage(),
+  BlocProvider(
+    create: (context) => getIt<ProfileCubit>()
+      ..getProfile()
+      ..loadPrinter(),
+    child: const ProfileScreen(),
+  ),
 ];
 String getTitle(int index) {
   switch (index) {

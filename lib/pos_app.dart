@@ -26,7 +26,7 @@ class PosApp extends StatelessWidget {
           locale: DevicePreview.locale(context),
           builder: DevicePreview.appBuilder,
           debugShowCheckedModeBanner: false,
-          // initialRoute: Routers.navigationBar,
+          // initialRoute: Routers.readerSelection,
           initialRoute: isLoggedInUser
               ? Routers.navigationBar
               : Routers.loginScreen,

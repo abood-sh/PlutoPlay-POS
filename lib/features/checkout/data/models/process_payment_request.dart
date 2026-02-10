@@ -52,3 +52,34 @@ class SplitPaymentItem {
 
   Map<String, dynamic> toJson() => _$SplitPaymentItemToJson(this);
 }
+
+/// Request model for processing payment through terminal
+/// Supports cash, card, and split payments with extended timeout
+@JsonSerializable(includeIfNull: false)
+class ProcessTerminalPaymentRequest {
+  @JsonKey(name: 'terminal_id')
+  final String terminalId;
+  @JsonKey(name: 'payment_method')
+  final String paymentMethod;
+  final num amount;
+  @JsonKey(name: 'customer_id')
+  final int customerId;
+  @JsonKey(name: 'amount_received')
+  final num? amountReceived;
+  @JsonKey(name: 'cash_amount')
+  final num? cashAmount;
+  @JsonKey(name: 'card_amount')
+  final num? cardAmount;
+
+  ProcessTerminalPaymentRequest({
+    required this.terminalId,
+    required this.paymentMethod,
+    required this.amount,
+    this.customerId = 4,
+    this.amountReceived,
+    this.cashAmount,
+    this.cardAmount,
+  });
+
+  Map<String, dynamic> toJson() => _$ProcessTerminalPaymentRequestToJson(this);
+}

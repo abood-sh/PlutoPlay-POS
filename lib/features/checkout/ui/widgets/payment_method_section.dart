@@ -4,15 +4,21 @@ import 'package:pos/core/helpers/spacing.dart';
 import 'package:pos/core/theming/colors.dart';
 
 class PaymentMethodSection extends StatefulWidget {
+  final num orderTotal;
   final Function(
     String method, {
     num? cashAmount,
     num? cardAmount,
+    num? amountReceived,
     String? referenceNumber,
   })?
   onMethodSelected;
 
-  const PaymentMethodSection({super.key, this.onMethodSelected});
+  const PaymentMethodSection({
+    super.key,
+    required this.orderTotal,
+    this.onMethodSelected,
+  });
 
   @override
   State<PaymentMethodSection> createState() => _PaymentMethodSectionState();
@@ -23,12 +29,14 @@ class _PaymentMethodSectionState extends State<PaymentMethodSection> {
   final TextEditingController _cashController = TextEditingController();
   final TextEditingController _cardController = TextEditingController();
   final TextEditingController _referenceController = TextEditingController();
+  final TextEditingController _amountReceivedController = TextEditingController();
 
   @override
   void dispose() {
     _cashController.dispose();
     _cardController.dispose();
     _referenceController.dispose();
+    _amountReceivedController.dispose();
     super.dispose();
   }
 
@@ -39,6 +47,7 @@ class _PaymentMethodSectionState extends State<PaymentMethodSection> {
           selectedMethod!,
           cashAmount: num.tryParse(_cashController.text) ?? 0,
           cardAmount: num.tryParse(_cardController.text) ?? 0,
+          amountReceived: num.tryParse(_amountReceivedController.text) ?? 0,
           referenceNumber: _referenceController.text.isNotEmpty
               ? _referenceController.text
               : null,
@@ -53,7 +62,8 @@ class _PaymentMethodSectionState extends State<PaymentMethodSection> {
       } else if (selectedMethod == 'Cash') {
         widget.onMethodSelected!(
           selectedMethod!,
-          cashAmount: num.tryParse(_cashController.text) ?? 0,
+          cashAmount: widget.orderTotal, // Auto-set to order total
+          amountReceived: num.tryParse(_amountReceivedController.text) ?? 0,
         );
       } else {
         widget.onMethodSelected!(selectedMethod!);
@@ -171,19 +181,54 @@ class _PaymentMethodSectionState extends State<PaymentMethodSection> {
   }
 
   Widget _buildCashAmountField() {
-    return TextField(
-      controller: _cashController,
-      keyboardType: TextInputType.number,
-      style: TextStyle(fontSize: 13.sp),
-      onChanged: (_) => _notifySelection(),
-      decoration: InputDecoration(
-        labelText: 'Cash Amount',
-        labelStyle: TextStyle(fontSize: 12.sp, color: ColorsManager.gray),
-        prefixText: '\$ ',
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(6.r)),
-        contentPadding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
-        isDense: true,
-      ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // Show order total (read-only)
+        Container(
+          width: double.infinity,
+          padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 12.h),
+          decoration: BoxDecoration(
+            color: ColorsManager.lighterGray.withOpacity(0.5),
+            borderRadius: BorderRadius.circular(6.r),
+            border: Border.all(color: ColorsManager.lighterGray),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Order Total',
+                style: TextStyle(fontSize: 12.sp, color: ColorsManager.gray),
+              ),
+              Text(
+                '\$${widget.orderTotal.toStringAsFixed(2)}',
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.bold,
+                  color: ColorsManager.darkBlue,
+                ),
+              ),
+            ],
+          ),
+        ),
+        verticalSpace(8.h),
+        TextField(
+          controller: _amountReceivedController,
+          keyboardType: TextInputType.number,
+          style: TextStyle(fontSize: 13.sp),
+          onChanged: (_) => _notifySelection(),
+          decoration: InputDecoration(
+            labelText: 'Amount Received',
+            labelStyle: TextStyle(fontSize: 12.sp, color: ColorsManager.gray),
+            hintText: 'What customer gives',
+            hintStyle: TextStyle(fontSize: 11.sp, color: ColorsManager.gray),
+            prefixText: '\$ ',
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(6.r)),
+            contentPadding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+            isDense: true,
+          ),
+        ),
+      ],
     );
   }
 
@@ -246,14 +291,16 @@ class _PaymentMethodSectionState extends State<PaymentMethodSection> {
         ),
         verticalSpace(8.h),
         TextField(
-          controller: _referenceController,
+          controller: _amountReceivedController,
+          keyboardType: TextInputType.number,
           style: TextStyle(fontSize: 13.sp),
           onChanged: (_) => _notifySelection(),
           decoration: InputDecoration(
-            labelText: 'Card Ref# (Optional)',
+            labelText: 'Amount Received (Cash)',
             labelStyle: TextStyle(fontSize: 11.sp, color: ColorsManager.gray),
-            hintText: 'TXN-12345',
+            hintText: 'What customer gives in cash',
             hintStyle: TextStyle(fontSize: 11.sp, color: ColorsManager.gray),
+            prefixText: '\$ ',
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(6.r),
             ),

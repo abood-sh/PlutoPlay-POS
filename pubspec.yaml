@@ -51,6 +51,8 @@ dependencies:
   esc_pos_printer_plus: 0.1.1
   esc_pos_utils_plus: 2.0.4
   audioplayers: ^6.1.0
+  mek_stripe_terminal: ^4.6.3
+  permission_handler: ^11.3.1
 
 
 

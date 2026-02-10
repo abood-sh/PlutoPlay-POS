@@ -10,6 +10,9 @@ import 'package:pos/features/home/ui/home_screen.dart';
 import 'package:pos/features/home/ui/nav_bar.dart' hide NavigationBar;
 import 'package:pos/features/login/logic/cubit/login_cubit.dart';
 import 'package:pos/features/login/ui/login_screen.dart';
+import 'package:pos/features/terminal/logic/cubit/terminal_cubit.dart';
+import 'package:pos/features/terminal/ui/terminal_selection_screen.dart';
+import 'package:pos/features/terminal/ui/reader_selection_screen.dart';
 
 import '../di/dependency_injection.dart';
 
@@ -35,6 +38,26 @@ class AppRouter {
           builder: (_) => BlocProvider(
             create: (context) => NavigationCubit(),
             child: NavigationBarApp(),
+          ),
+        );
+
+      case Routers.terminalSelection:
+        final deviceId = settings.arguments as String? ?? '';
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => getIt<TerminalCubit>(),
+            child: TerminalSelectionScreen(deviceId: deviceId),
+          ),
+        );
+
+      case Routers.readerSelection:
+        // Use provided locationId or default to the registered Stripe location
+        final locationId =
+            settings.arguments as String? ?? 'tml_GXZzIwIyrIFZYi';
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => getIt<TerminalCubit>(),
+            child: ReaderSelectionScreen(locationId: locationId),
           ),
         );
 

@@ -40,4 +40,37 @@ class CheckoutState with _$CheckoutState {
   const factory CheckoutState.paymentSuccess(PaymentResponseData data) =
       PaymentSuccess;
   const factory CheckoutState.paymentError(ApiErrorModel error) = PaymentError;
+
+  // Terminal payment states
+  const factory CheckoutState.terminalPaymentProcessing() =
+      TerminalPaymentProcessing;
+  const factory CheckoutState.terminalPaymentSuccess(
+    ProcessPaymentResponse response,
+  ) = TerminalPaymentSuccess;
+  const factory CheckoutState.terminalPaymentError(
+    ProcessPaymentResponse response,
+  ) = TerminalPaymentError;
+  const factory CheckoutState.terminalPaymentTimeout(
+    ProcessPaymentResponse response,
+  ) = TerminalPaymentTimeout;
+
+  // Stripe Terminal 3-step card payment states
+  const factory CheckoutState.cardPaymentCreatingIntent() =
+      CardPaymentCreatingIntent;
+  const factory CheckoutState.cardPaymentCollecting() = CardPaymentCollecting;
+  const factory CheckoutState.cardPaymentConfirming() = CardPaymentConfirming;
+  const factory CheckoutState.cardPaymentSuccess(PaymentResponseData data) =
+      CardPaymentSuccess;
+  const factory CheckoutState.cardPaymentError(String message) =
+      CardPaymentError;
+  const factory CheckoutState.cardPaymentCancelled() = CardPaymentCancelled;
+
+  // Split Payment states (Card via SDK + Cash)
+  const factory CheckoutState.splitPaymentCardSuccess({
+    required num cardAmount,
+    required num cashAmount,
+    required String paymentIntentId,
+  }) = SplitPaymentCardSuccess;
+  const factory CheckoutState.splitPaymentComplete(PaymentResponseData data) =
+      SplitPaymentComplete;
 }

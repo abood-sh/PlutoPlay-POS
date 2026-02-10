@@ -14,14 +14,28 @@ ProcessPaymentResponse _$ProcessPaymentResponseFromJson(
   data: json['data'] == null
       ? null
       : PaymentResponseData.fromJson(json['data'] as Map<String, dynamic>),
+  errors: json['errors'] as Map<String, dynamic>?,
+  cartTotal: json['cart_total'] as num?,
+  providedAmount: json['provided_amount'] as num?,
+  cashAmount: json['cash_amount'] as num?,
+  cardAmount: json['card_amount'] as num?,
+  totalPayments: json['total_payments'] as num?,
+  timeout: json['timeout'] as bool?,
 );
 
 Map<String, dynamic> _$ProcessPaymentResponseToJson(
   ProcessPaymentResponse instance,
 ) => <String, dynamic>{
-  'success': instance.success,
-  'message': instance.message,
-  'data': instance.data,
+  if (instance.success case final value?) 'success': value,
+  if (instance.message case final value?) 'message': value,
+  if (instance.data case final value?) 'data': value,
+  if (instance.errors case final value?) 'errors': value,
+  if (instance.cartTotal case final value?) 'cart_total': value,
+  if (instance.providedAmount case final value?) 'provided_amount': value,
+  if (instance.cashAmount case final value?) 'cash_amount': value,
+  if (instance.cardAmount case final value?) 'card_amount': value,
+  if (instance.totalPayments case final value?) 'total_payments': value,
+  if (instance.timeout case final value?) 'timeout': value,
 };
 
 PaymentResponseData _$PaymentResponseDataFromJson(Map<String, dynamic> json) =>
@@ -32,6 +46,9 @@ PaymentResponseData _$PaymentResponseDataFromJson(Map<String, dynamic> json) =>
       invoiceNumber: json['invoice_number'] as String?,
       paymentMethod: json['payment_method'] as String?,
       paymentsCount: (json['payments_count'] as num?)?.toInt(),
+      changeDue: json['change_due'] as num?,
+      amountReceived: json['amount_received'] as num?,
+      change: json['change'] as num?,
     );
 
 Map<String, dynamic> _$PaymentResponseDataToJson(
@@ -41,6 +58,9 @@ Map<String, dynamic> _$PaymentResponseDataToJson(
   'invoice_number': instance.invoiceNumber,
   'payment_method': instance.paymentMethod,
   'payments_count': instance.paymentsCount,
+  'change_due': instance.changeDue,
+  'amount_received': instance.amountReceived,
+  'change': instance.change,
 };
 
 OrderData _$OrderDataFromJson(Map<String, dynamic> json) => OrderData(

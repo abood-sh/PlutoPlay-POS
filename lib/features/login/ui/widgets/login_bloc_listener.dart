@@ -4,6 +4,7 @@ import 'package:pos/core/helpers/extension.dart';
 import 'package:pos/core/networking/api_error_model.dart';
 import 'package:pos/features/login/logic/cubit/login_cubit.dart';
 import 'package:pos/features/login/logic/cubit/login_state.dart';
+import 'package:pos/features/login/data/models/login_res_body.dart';
 
 import '../../../../core/routing/routers.dart';
 import '../../../../core/theming/styles.dart';
@@ -26,8 +27,12 @@ class LoginBlocListener extends StatelessWidget {
             // );
           },
           success: (loginResponse) {
-            //context.pop();
-            context.pushReplacementNamed(Routers.navigationBar);
+            // Navigate to reader selection screen with Stripe location ID
+            // The SDK will discover readers at this location
+            context.pushReplacementNamed(
+              Routers.readerSelection,
+              arguments: 'tml_GXZzIwIyrIFZYi', // Stripe Terminal location ID
+            );
           },
           error: (apiErrorModel) {
             setUpErrorState(context, apiErrorModel);

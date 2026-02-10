@@ -1,14 +1,26 @@
 class ApiConstanta {
   static const String apiBaseUrl = 'https://loarien.com/api/v1/pos';
+  static const String apiStripe = 'https://loarien.com//stripe/terminal';
   static const String login = '/login';
+  static const String profile = '/auth/profile';
   static const String cart = '/cart';
   static const String addRFid = '/cart/add-rfid';
   static const String systemsSettings = '/system/settings';
   static const String applyDiscount = '/cart/discount';
   static const String addCustom = '/cart/add-custom';
   static String clearOneCartItem(String cartItemId) => '/cart/item/$cartItemId';
-  static const String processPaymentCash = '/checkout/process';
-  static const String processSplitPayment = '/checkout/process-split';
+  // static const String processPaymentCash = '/checkout/process';
+  // static const String processSplitPayment = '/checkout/process-split';
+  static const String stripeTerminal = '/stripe-terminal';
+  static String listTerminals(String deviceId) =>
+      '/stripe-terminal/list?device_id=$deviceId';
+  static const String connectionToken = '/stripe-terminal/connection-token';
+  static const String paymentTerminal = '/checkout/process-single';
+
+  // Stripe Terminal 3-step payment flow
+  static const String createPaymentIntent =
+      '/stripe/terminal/create-payment-intent';
+  static const String checkoutConfirm = '/checkout/confirm';
 }
 
 class ApiErrors {

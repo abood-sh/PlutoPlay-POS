@@ -2,13 +2,42 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'process_payment_response.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(includeIfNull: false)
 class ProcessPaymentResponse {
   final bool? success;
   final String? message;
   final PaymentResponseData? data;
+  final Map<String, dynamic>? errors;
+  @JsonKey(name: 'cart_total')
+  final num? cartTotal;
+  @JsonKey(name: 'provided_amount')
+  final num? providedAmount;
+  @JsonKey(name: 'cash_amount')
+  final num? cashAmount;
+  @JsonKey(name: 'card_amount')
+  final num? cardAmount;
+  @JsonKey(name: 'total_payments')
+  final num? totalPayments;
+  final bool? timeout;
 
-  ProcessPaymentResponse({this.success, this.message, this.data});
+  ProcessPaymentResponse({
+    this.success,
+    this.message,
+    this.data,
+    this.errors,
+    this.cartTotal,
+    this.providedAmount,
+    this.cashAmount,
+    this.cardAmount,
+    this.totalPayments,
+    this.timeout,
+  });
+
+  /// Check if request was successful
+  bool get isSuccess => success == true;
+
+  /// Check if request timed out
+  bool get isTimeout => timeout == true;
 
   factory ProcessPaymentResponse.fromJson(Map<String, dynamic> json) =>
       _$ProcessPaymentResponseFromJson(json);
@@ -23,12 +52,21 @@ class PaymentResponseData {
   final String? paymentMethod;
   @JsonKey(name: 'payments_count')
   final int? paymentsCount;
+  @JsonKey(name: 'change_due')
+  final num? changeDue;
+  @JsonKey(name: 'amount_received')
+  final num? amountReceived;
+  // Additional change field for split payments
+  final num? change;
 
   PaymentResponseData({
     this.order,
     this.invoiceNumber,
     this.paymentMethod,
     this.paymentsCount,
+    this.changeDue,
+    this.amountReceived,
+    this.change,
   });
 
   factory PaymentResponseData.fromJson(Map<String, dynamic> json) =>
